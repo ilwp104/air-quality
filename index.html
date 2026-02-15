@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국 미세먼지 실시간 현황</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: #e0e0e0;
+    }
+
+    .container { max-width: 960px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 36px; }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: #fff;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    header .subtitle {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+
+    .status-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-bar .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .badge-live {
+      background: rgba(76, 175, 80, 0.2);
+      color: #81c784;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+    }
+
+    .badge-live .dot {
+      width: 8px; height: 8px;
+      background: #4caf50;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .badge-time {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .badge-refresh {
+      background: rgba(100, 181, 246, 0.15);
+      color: #90caf9;
+      border: 1px solid rgba(100, 181, 246, 0.25);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .badge-refresh:hover {
+      background: rgba(100, 181, 246, 0.3);
+    }
+
+    .badge-refresh.spinning .refresh-icon {
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .card {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 1.15rem;
+      margin-bottom: 20px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* 지도 */
+    #map {
+      width: 100%;
+      height: 450px;
+      border-radius: 12px;
+      z-index: 1;
+    }
+
+    .map-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 450px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      color: rgba(255,255,255,0.5);
+      font-size: 0.95rem;
+    }
+
+    .map-loading .spinner {
+      width: 24px; height: 24px;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: #90caf9;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 10px;
+    }
+
+    /* 내 위치 정보 바 */
+    .my-location-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      flex-wrap: wrap;
+    }
+
+    .my-location-bar .loc-icon {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .my-location-bar .loc-info { flex: 1; min-width: 150px; }
+    .my-location-bar .loc-info .loc-name { font-weight: 700; font-size: 1.05rem; }
+    .my-location-bar .loc-info .loc-station { font-size: 0.75rem; opacity: 0.7; margin-top: 2px; }
+
+    .my-location-bar .loc-aqi {
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .my-location-bar .loc-aqi .aqi-num {
+      font-size: 2.2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .my-location-bar .loc-aqi .aqi-lbl {
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .my-location-bar .loc-pollutants {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8rem;
+    }
+
+    .my-location-bar .loc-pollutants .p-item {
+      text-align: center;
+    }
+
+    .my-location-bar .loc-pollutants .p-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .my-location-bar .loc-pollutants .p-val {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    /* AQI 마커 */
+    .aqi-marker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.7rem;
+      font-family: 'Segoe UI', sans-serif;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      border: 2px solid rgba(255,255,255,0.8);
+      cursor: pointer;
+    }
+
+    .my-marker {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #4285f4;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 6px rgba(66,133,244,0.3), 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    /* Leaflet 팝업 커스텀 */
+    .leaflet-popup-content-wrapper {
+      background: #1e293b;
+      color: #e0e0e0;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    .leaflet-popup-tip { background: #1e293b; }
+    .leaflet-popup-content {
+      margin: 14px 16px;
+      font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .leaflet-popup-content strong { color: #fff; }
+    .popup-aqi {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 10px;
+      font-weight: 700;
+      color: #fff;
+      font-size: 0.8rem;
+      margin-left: 4px;
+    }
+
+    /* 도시 그리드 */
+    .city-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .city-card {
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .city-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+
+    .city-card .city-name { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+    .city-card .station { font-size: 0.7rem; opacity: 0.6; margin-bottom: 10px; }
+    .city-card .aqi-value { font-size: 2.4rem; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .city-card .aqi-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+
+    .city-card .pollutants {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .city-card .pollutants span {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .city-card .pollutants .label {
+      font-weight: 600;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+    }
+
+    /* AQI 등급별 색상 */
+    .aqi-good { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #c8e6c9; }
+    .aqi-good .aqi-value, .aqi-good .city-name { color: #e8f5e9; }
+
+    .aqi-moderate { background: linear-gradient(135deg, #e65100, #f57c00); color: #fff3e0; }
+    .aqi-moderate .aqi-value, .aqi-moderate .city-name { color: #fff8e1; }
+
+    .aqi-unhealthy-sg { background: linear-gradient(135deg, #e65100, #bf360c); color: #fbe9e7; }
+    .aqi-unhealthy-sg .aqi-value, .aqi-unhealthy-sg .city-name { color: #fbe9e7; }
+
+    .aqi-unhealthy { background: linear-gradient(135deg, #b71c1c, #c62828); color: #ffcdd2; }
+    .aqi-unhealthy .aqi-value, .aqi-unhealthy .city-name { color: #ffebee; }
+
+    .aqi-very-unhealthy { background: linear-gradient(135deg, #4a148c, #6a1b9a); color: #e1bee7; }
+    .aqi-very-unhealthy .aqi-value, .aqi-very-unhealthy .city-name { color: #f3e5f5; }
+
+    .aqi-hazardous { background: linear-gradient(135deg, #880e4f, #ad1457); color: #f8bbd0; }
+    .aqi-hazardous .aqi-value, .aqi-hazardous .city-name { color: #fce4ec; }
+
+    .aqi-loading { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); }
+
+    /* 등급 테이블 */
+    .grade-table { width: 100%; border-collapse: collapse; }
+    .grade-table th, .grade-table td {
+      padding: 12px 16px;
+      text-align: center;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .grade-table th {
+      color: rgba(255,255,255,0.5);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .grade-dot {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .dot-good { background: #4caf50; }
+    .dot-moderate { background: #ff9800; }
+    .dot-usg { background: #ff5722; }
+    .dot-unhealthy { background: #f44336; }
+    .dot-very { background: #9c27b0; }
+    .dot-hazardous { background: #e91e63; }
+
+    /* 링크 */
+    .links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .links a {
+      display: block;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      text-decoration: none;
+      color: #ccc;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .links a:hover {
+      background: rgba(102, 126, 234, 0.3);
+      border-color: rgba(102, 126, 234, 0.5);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .links a small {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 400;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 32px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      line-height: 1.8;
+    }
+
+    footer a { color: rgba(255,255,255,0.5); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .city-card { animation: fadeIn 0.4s ease-out; }
+
+    @media (max-width: 480px) {
+      body { padding: 20px 12px; }
+      .card { padding: 20px 16px; }
+      header h1 { font-size: 1.6rem; }
+      #map { height: 350px; }
+      .city-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .city-card { padding: 14px 10px; }
+      .city-card .aqi-value { font-size: 1.8rem; }
+      .my-location-bar { flex-direction: column; text-align: center; }
+      .my-location-bar .loc-pollutants { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>한국 미세먼지 실시간 현황</h1>
+      <p class="subtitle">주요 도시 대기질 지수 (AQI) 실시간 모니터링</p>
+      <div class="status-bar">
+        <span class="badge badge-live"><span class="dot"></span> 실시간</span>
+        <span class="badge badge-time" id="update-time">업데이트 중...</span>
+        <span class="badge badge-refresh" id="refresh-btn" title="새로고침">
+          <span class="refresh-icon">&#x21bb;</span> 새로고침
+        </span>
+      </div>
+    </header>
+
+    <!-- 내 위치 지도 -->
+    <div class="card" id="map-card">
+      <h2>&#x1F4CD; 내 주변 대기질 지도</h2>
+      <div id="my-location-container"></div>
+      <div id="map-container">
+        <div class="map-loading" id="map-loading">
+          <div class="spinner"></div>
+          위치 정보를 가져오는 중...
+        </div>
+      </div>
+    </div>
+
+    <!-- 주요 도시 -->
+    <div class="card">
+      <h2>주요 도시 대기질</h2>
+      <div class="city-grid" id="city-grid"></div>
+    </div>
+
+    <!-- 등급 안내 -->
+    <div class="card">
+      <h2>대기질 지수 (AQI) 등급 안내</h2>
+      <table class="grade-table">
+        <thead>
+          <tr>
+            <th>등급</th>
+            <th>AQI</th>
+            <th>PM2.5 (&#13197;/&#13221;)</th>
+            <th>행동 요령</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="grade-dot dot-good"></span>좋음</td>
+            <td>0 ~ 50</td><td>0 ~ 15</td><td>야외활동 적합</td>
+          </tr>
+          <tr>
+            <td><span class="grade-dot dot-moderate"></span>보통</td>
+            <td>51 ~ 100</td><td>16 ~ 35</td><td>민감군 주의</td>
+          </tr>
+          <tr>
+            <td><span class="grade-dot dot-usg"></span>민감군 나쁨</td>
+            <td>101 ~ 150</td><td>36 ~ 75</td><td>민감군 야외활동 자제</td>
+          </tr>
+          <tr>
+            <td><span class="grade-dot dot-unhealthy"></span>나쁨</td>
+            <td>151 ~ 200</td><td>76 ~ 150</td><td>야외활동 자제</td>
+          </tr>
+          <tr>
+            <td><span class="grade-dot dot-very"></span>매우 나쁨</td>
+            <td>201 ~ 300</td><td>151 ~ 250</td><td>외출 자제, 마스크 착용</td>
+          </tr>
+          <tr>
+            <td><span class="grade-dot dot-hazardous"></span>위험</td>
+            <td>301+</td><td>251+</td><td>실외활동 금지</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 참고 사이트 -->
+    <div class="card">
+      <h2>참고 사이트</h2>
+      <div class="links">
+        <a href="https://www.airkorea.or.kr/web/" target="_blank" rel="noopener">
+          에어코리아<small>환경부 실시간 대기질</small>
+        </a>
+        <a href="https://cleanair.seoul.go.kr/" target="_blank" rel="noopener">
+          서울시 대기환경정보<small>서울 지역 상세 데이터</small>
+        </a>
+        <a href="https://aqicn.org/map/south-korea/kr/" target="_blank" rel="noopener">
+          WAQI 한국 지도<small>전국 실시간 AQI 지도</small>
+        </a>
+        <a href="https://www.airkorea.or.kr/web/dustForecast" target="_blank" rel="noopener">
+          대기질 예보<small>오늘/내일/모레 예보</small>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <p>데이터 출처: <a href="https://waqi.info/" target="_blank" rel="noopener">World Air Quality Index (WAQI)</a></p>
+      <p>30분마다 자동 갱신 | 데이터는 실제 관측값과 차이가 있을 수 있습니다</p>
+    </footer>
+  </div>
+
+  <script>
+    // ─── 공통 설정 ───
+    const WAQI_TOKEN = 'demo';
+    const REFRESH_INTERVAL = 30 * 60 * 1000;
+    let map = null;
+    let markerLayer = null;
+    let userLat = null, userLng = null;
+
+    const CITIES = [
+      { id: 'seoul',    name: '서울',  feed: 'seoul' },
+      { id: 'busan',    name: '부산',  feed: 'busan' },
+      { id: 'incheon',  name: '인천',  feed: 'incheon' },
+      { id: 'daegu',    name: '대구',  feed: 'daegu' },
+      { id: 'daejeon',  name: '대전',  feed: 'daejeon' },
+      { id: 'gwangju',  name: '광주',  feed: 'gwangju' },
+      { id: 'ulsan',    name: '울산',  feed: 'ulsan' },
+      { id: 'sejong',   name: '세종',  feed: 'sejong' },
+      { id: 'suwon',    name: '수원',  feed: 'suwon' },
+      { id: 'jeju',     name: '제주',  feed: 'jeju' },
+      { id: 'changwon', name: '창원',  feed: 'changwon' },
+      { id: 'cheongju', name: '청주',  feed: 'cheongju' },
+    ];
+
+    // ─── AQI 유틸 ───
+    function getAqiInfo(aqi) {
+      if (aqi <= 50)  return { label: '좋음',      cls: 'aqi-good',           color: '#4caf50' };
+      if (aqi <= 100) return { label: '보통',      cls: 'aqi-moderate',       color: '#ff9800' };
+      if (aqi <= 150) return { label: '민감군 나쁨', cls: 'aqi-unhealthy-sg',  color: '#ff5722' };
+      if (aqi <= 200) return { label: '나쁨',      cls: 'aqi-unhealthy',      color: '#f44336' };
+      if (aqi <= 300) return { label: '매우 나쁨',  cls: 'aqi-very-unhealthy', color: '#9c27b0' };
+      return               { label: '위험',      cls: 'aqi-hazardous',      color: '#e91e63' };
+    }
+
+    function getAqiColor(aqi) {
+      return getAqiInfo(aqi).color;
+    }
+
+    // ─── 지도 초기화 ───
+    function initMap(lat, lng) {
+      const container = document.getElementById('map-container');
+      container.innerHTML = '<div id="map"></div>';
+
+      map = L.map('map', {
+        center: [lat, lng],
+        zoom: 11,
+        zoomControl: true,
+      });
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/">CARTO</a>',
+        maxZoom: 18,
+      }).addTo(map);
+
+      // 내 위치 마커
+      const myIcon = L.divIcon({
+        className: '',
+        html: '<div class="my-marker"></div>',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+      });
+
+      L.marker([lat, lng], { icon: myIcon, zIndexOffset: 1000 })
+        .addTo(map)
+        .bindPopup('<strong>내 위치</strong>');
+
+      markerLayer = L.layerGroup().addTo(map);
+
+      // 지도 이동 시 주변 관측소 갱신
+      map.on('moveend', loadMapStations);
+    }
+
+    // ─── AQI 마커 아이콘 생성 ───
+    function createAqiIcon(aqi) {
+      const color = getAqiColor(aqi);
+      return L.divIcon({
+        className: '',
+        html: `<div class="aqi-marker" style="background:${color};">${aqi}</div>`,
+        iconSize: [36, 36],
+        iconAnchor: [18, 18],
+      });
+    }
+
+    // ─── 지도 주변 관측소 로드 ───
+    async function loadMapStations() {
+      if (!map) return;
+      const bounds = map.getBounds();
+      const lat1 = bounds.getSouth();
+      const lng1 = bounds.getWest();
+      const lat2 = bounds.getNorth();
+      const lng2 = bounds.getEast();
+
+      try {
+        const res = await fetch(
+          `https://api.waqi.info/v2/map/bounds/?latlng=${lat1},${lng1},${lat2},${lng2}&networks=all&token=${WAQI_TOKEN}`
+        );
+        const json = await res.json();
+        if (json.status !== 'ok') return;
+
+        markerLayer.clearLayers();
+
+        json.data.forEach(station => {
+          const aqi = station.aqi;
+          if (aqi === '-' || isNaN(aqi)) return;
+
+          const marker = L.marker([station.lat, station.lon], {
+            icon: createAqiIcon(parseInt(aqi)),
+          });
+
+          const info = getAqiInfo(parseInt(aqi));
+          const name = station.station?.name || '관측소';
+          marker.bindPopup(`
+            <strong>${name}</strong><br>
+            AQI: <span class="popup-aqi" style="background:${info.color}">${aqi} ${info.label}</span>
+          `);
+
+          markerLayer.addLayer(marker);
+        });
+      } catch (e) {
+        console.error('관측소 로드 실패:', e);
+      }
+    }
+
+    // ─── 내 위치 근처 AQI 정보 표시 ───
+    async function loadMyLocationAqi(lat, lng) {
+      const container = document.getElementById('my-location-container');
+      try {
+        const res = await fetch(
+          `https://api.waqi.info/feed/geo:${lat};${lng}/?token=${WAQI_TOKEN}`
+        );
+        const json = await res.json();
+        if (json.status !== 'ok') throw new Error(json.data);
+
+        const d = json.data;
+        const aqi = d.aqi;
+        const info = getAqiInfo(aqi);
+        const iaqi = d.iaqi || {};
+        const pm25 = iaqi.pm25 ? iaqi.pm25.v : '-';
+        const pm10 = iaqi.pm10 ? iaqi.pm10.v : '-';
+        const o3   = iaqi.o3   ? iaqi.o3.v   : '-';
+        const no2  = iaqi.no2  ? iaqi.no2.v  : '-';
+        const stationName = d.city?.name || '내 주변 관측소';
+
+        container.innerHTML = `
+          <div class="my-location-bar ${info.cls}">
+            <div class="loc-icon" style="background:rgba(255,255,255,0.15);">&#x1F4CD;</div>
+            <div class="loc-info">
+              <div class="loc-name">내 위치 대기질</div>
+              <div class="loc-station">${stationName}</div>
+            </div>
+            <div class="loc-aqi">
+              <div class="aqi-num">${aqi}</div>
+              <div class="aqi-lbl">${info.label}</div>
+            </div>
+            <div class="loc-pollutants">
+              <div class="p-item"><div class="p-label">PM2.5</div><div class="p-val">${pm25}</div></div>
+              <div class="p-item"><div class="p-label">PM10</div><div class="p-val">${pm10}</div></div>
+              <div class="p-item"><div class="p-label">O3</div><div class="p-val">${o3}</div></div>
+              <div class="p-item"><div class="p-label">NO2</div><div class="p-val">${no2}</div></div>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        container.innerHTML = `
+          <div class="my-location-bar aqi-loading" style="justify-content:center;">
+            주변 관측소 데이터를 불러올 수 없습니다.
+          </div>
+        `;
+      }
+    }
+
+    // ─── 위치 요청 ───
+    function requestLocation() {
+      if (!navigator.geolocation) {
+        showMapFallback('이 브라우저는 위치 서비스를 지원하지 않습니다.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          userLat = pos.coords.latitude;
+          userLng = pos.coords.longitude;
+          initMap(userLat, userLng);
+          loadMapStations();
+          loadMyLocationAqi(userLat, userLng);
+        },
+        (err) => {
+          // 위치 거부 시 서울 중심으로 표시
+          showMapFallback(null);
+          userLat = 37.5665;
+          userLng = 126.9780;
+          initMap(userLat, userLng);
+          loadMapStations();
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    function showMapFallback(msg) {
+      const container = document.getElementById('my-location-container');
+      if (msg) {
+        container.innerHTML = `
+          <div class="my-location-bar aqi-loading" style="justify-content:center;">
+            ${msg}
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="my-location-bar aqi-loading" style="justify-content:center;">
+            위치 권한이 거부되어 서울 중심으로 표시합니다.
+          </div>
+        `;
+      }
+    }
+
+    // ─── 도시 그리드 ───
+    function renderLoadingCards() {
+      const grid = document.getElementById('city-grid');
+      grid.innerHTML = CITIES.map(city => `
+        <div class="city-card aqi-loading">
+          <div class="city-name">${city.name}</div>
+          <div class="station">불러오는 중...</div>
+          <div class="aqi-value">--</div>
+          <div class="aqi-label">로딩</div>
+        </div>
+      `).join('');
+    }
+
+    async function fetchCityAqi(city) {
+      try {
+        const res = await fetch(
+          `https://api.waqi.info/feed/${city.feed}/?token=${WAQI_TOKEN}`
+        );
+        const json = await res.json();
+        if (json.status !== 'ok') throw new Error(json.data);
+        return { city, data: json.data };
+      } catch (err) {
+        return { city, error: err.message };
+      }
+    }
+
+    function renderCityCard(result) {
+      if (result.error) {
+        return `
+          <div class="city-card aqi-loading">
+            <div class="city-name">${result.city.name}</div>
+            <div class="station">데이터 없음</div>
+            <div class="aqi-value">--</div>
+            <div class="aqi-label">오류</div>
+          </div>
+        `;
+      }
+
+      const { data } = result;
+      const aqi = data.aqi;
+      const info = getAqiInfo(aqi);
+      const iaqi = data.iaqi || {};
+      const pm25 = iaqi.pm25 ? iaqi.pm25.v : '-';
+      const pm10 = iaqi.pm10 ? iaqi.pm10.v : '-';
+      const stationName = data.city?.name || '';
+
+      return `
+        <div class="city-card ${info.cls}" style="animation-delay: ${Math.random() * 0.3}s">
+          <div class="city-name">${result.city.name}</div>
+          <div class="station">${stationName}</div>
+          <div class="aqi-value">${aqi}</div>
+          <div class="aqi-label">${info.label}</div>
+          <div class="pollutants">
+            <span><span class="label">PM2.5</span>${pm25}</span>
+            <span><span class="label">PM10</span>${pm10}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // ─── 전체 데이터 로드 ───
+    async function loadAllData() {
+      const refreshBtn = document.getElementById('refresh-btn');
+      refreshBtn.classList.add('spinning');
+      renderLoadingCards();
+
+      // 도시 데이터
+      const results = await Promise.all(CITIES.map(fetchCityAqi));
+      document.getElementById('city-grid').innerHTML = results.map(renderCityCard).join('');
+
+      // 지도 갱신
+      if (map) {
+        loadMapStations();
+        if (userLat && userLng) loadMyLocationAqi(userLat, userLng);
+      }
+
+      // 시간 갱신
+      const now = new Date();
+      const timeStr = now.toLocaleString('ko-KR', {
+        year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+      });
+      document.getElementById('update-time').textContent = timeStr + ' 기준';
+      refreshBtn.classList.remove('spinning');
+    }
+
+    // ─── 시작 ───
+    requestLocation();
+    loadAllData();
+    setInterval(loadAllData, REFRESH_INTERVAL);
+    document.getElementById('refresh-btn').addEventListener('click', loadAllData);
+  </script>
+</body>
+</html>

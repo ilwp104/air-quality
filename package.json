@@ -1,0 +1,12 @@
+{
+  "name": "air-quality-dashboard",
+  "version": "1.0.0",
+  "description": "한국 미세먼지 실시간 대시보드",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}

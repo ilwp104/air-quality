@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한국 미세먼지 실시간 현황</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/topojson-client@3"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh; padding: 40px 20px; color: #e0e0e0;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 36px; }
+    header h1 { font-size: 2.2rem; color: #fff; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+    header .subtitle { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+    .status-bar { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+    .status-bar .badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+    .badge-live { background: rgba(76,175,80,0.2); color: #81c784; border: 1px solid rgba(76,175,80,0.3); }
+    .badge-live .dot { width: 8px; height: 8px; background: #4caf50; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .badge-time { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); }
+    .badge-src { background: rgba(0,150,136,0.15); color: #80cbc4; border: 1px solid rgba(0,150,136,0.25); }
+    .badge-refresh { background: rgba(100,181,246,0.15); color: #90caf9; border: 1px solid rgba(100,181,246,0.25); cursor: pointer; transition: all 0.2s; }
+    .badge-refresh:hover { background: rgba(100,181,246,0.3); }
+    .badge-refresh.spinning .ri { animation: spin 1s linear infinite; }
+    @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    .card { background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 28px 32px; margin-bottom: 20px; }
+    .card h2 { font-size: 1.15rem; margin-bottom: 20px; color: #fff; display: flex; align-items: center; gap: 8px; }
+    .card h2 .h2-sub { font-size: 0.75rem; font-weight: 400; opacity: 0.5; }
+
+    /* ─── 행정구역 지도 ─── */
+    #district-map-svg { width: 100%; background: rgba(255,255,255,0.03); border-radius: 12px; }
+    #district-map-svg .district { stroke: rgba(255,255,255,0.3); stroke-width: 0.5px; cursor: pointer; transition: opacity 0.15s; }
+    #district-map-svg .district:hover { opacity: 0.8; stroke: #fff; stroke-width: 1.5px; }
+    #district-map-svg .district-label { fill: rgba(0,0,0,0.7); font-size: 9px; font-weight: 700; pointer-events: none; text-anchor: middle; }
+    #district-map-svg .district-val { fill: rgba(0,0,0,0.5); font-size: 7px; font-weight: 600; pointer-events: none; text-anchor: middle; }
+
+    .map-loading { text-align: center; padding: 60px; color: rgba(255,255,255,0.4); }
+    .map-loading .sp { display: inline-block; width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.15); border-top-color: #90caf9; border-radius: 50%; animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle; }
+
+    /* 범례 */
+    .legend { display: flex; justify-content: center; gap: 16px; margin-top: 14px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+    .legend-color { width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.2); }
+
+    /* 툴팁 */
+    .map-tooltip {
+      position: fixed; pointer-events: none; z-index: 100;
+      background: #1e293b; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px; padding: 12px 16px; font-size: 0.82rem;
+      color: #e0e0e0; box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      display: none; max-width: 220px; line-height: 1.6;
+    }
+    .map-tooltip .tt-name { font-weight: 700; color: #fff; font-size: 0.95rem; margin-bottom: 4px; }
+    .map-tooltip .tt-badge { display: inline-block; padding: 2px 8px; border-radius: 8px; font-weight: 700; color: #fff; font-size: 0.72rem; }
+
+    /* 요약 바 */
+    .my-summary { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding: 20px 24px; border-radius: 14px; flex-wrap: wrap; }
+    .my-summary .s-icon { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; background: rgba(255,255,255,0.15); }
+    .my-summary .s-info { flex: 1; min-width: 140px; }
+    .my-summary .s-region { font-weight: 800; font-size: 1.2rem; }
+    .my-summary .s-station { font-size: 0.75rem; opacity: 0.7; margin-top: 2px; }
+    .my-summary .s-time { font-size: 0.65rem; opacity: 0.5; margin-top: 2px; }
+    .my-summary .s-grade { text-align: center; min-width: 90px; }
+    .my-summary .s-grade .gv { font-size: 2.6rem; font-weight: 800; line-height: 1; }
+    .my-summary .s-grade .gl { font-size: 0.85rem; font-weight: 600; margin-top: 4px; }
+    .my-summary .s-data { display: flex; gap: 14px; }
+    .my-summary .sd { text-align: center; }
+    .my-summary .sd .sl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; opacity: 0.6; }
+    .my-summary .sd .sv { font-size: 1.15rem; font-weight: 700; margin-top: 2px; }
+
+    /* ─── 도시 그리드 ─── */
+    .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+    .city-card { border-radius: 14px; padding: 20px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; overflow: hidden; }
+    .city-card:hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+    .city-card .c-name { font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+    .city-card .c-station { font-size: 0.7rem; opacity: 0.6; margin-bottom: 10px; }
+    .city-card .c-val { font-size: 2.4rem; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .city-card .c-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 10px; }
+    .city-card .c-data { display: flex; justify-content: center; gap: 12px; font-size: 0.75rem; opacity: 0.8; }
+    .city-card .c-data span { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .city-card .c-data .lb { font-weight: 600; font-size: 0.65rem; text-transform: uppercase; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    .city-card { animation: fadeIn 0.4s ease-out; }
+
+    /* 등급 색상 */
+    .gr-good { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #c8e6c9; }
+    .gr-good .c-val,.gr-good .c-name,.gr-good .gv,.gr-good .s-region { color: #e8f5e9; }
+    .gr-mod { background: linear-gradient(135deg, #0277bd, #0288d1); color: #b3e5fc; }
+    .gr-mod .c-val,.gr-mod .c-name,.gr-mod .gv,.gr-mod .s-region { color: #e1f5fe; }
+    .gr-bad { background: linear-gradient(135deg, #e65100, #f57c00); color: #fff3e0; }
+    .gr-bad .c-val,.gr-bad .c-name,.gr-bad .gv,.gr-bad .s-region { color: #fff8e1; }
+    .gr-vbad { background: linear-gradient(135deg, #b71c1c, #c62828); color: #ffcdd2; }
+    .gr-vbad .c-val,.gr-vbad .c-name,.gr-vbad .gv,.gr-vbad .s-region { color: #ffebee; }
+    .gr-load { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.4); }
+
+    /* 등급 테이블 */
+    .grade-table { width: 100%; border-collapse: collapse; }
+    .grade-table th,.grade-table td { padding: 12px 16px; text-align: center; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .grade-table th { color: rgba(255,255,255,0.5); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .grade-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
+    .dot-good { background: #4caf50; } .dot-mod { background: #0288d1; } .dot-bad { background: #ff9800; } .dot-vbad { background: #f44336; }
+
+    /* 링크 */
+    .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+    .links a { display: block; padding: 14px 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; text-decoration: none; color: #ccc; font-size: 0.9rem; font-weight: 500; transition: all 0.2s; }
+    .links a:hover { background: rgba(102,126,234,0.3); border-color: rgba(102,126,234,0.5); color: #fff; transform: translateY(-2px); }
+    .links a small { display: block; font-size: 0.72rem; opacity: 0.6; margin-top: 4px; }
+
+    footer { text-align: center; margin-top: 32px; color: rgba(255,255,255,0.4); font-size: 0.75rem; line-height: 1.8; }
+    footer a { color: rgba(255,255,255,0.5); }
+
+    /* ─── 지역 선택 오버레이 ─── */
+    .region-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+      display: none; align-items: center; justify-content: center;
+    }
+    .region-overlay.open { display: flex; }
+    .region-panel {
+      background: #1e293b; border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 18px; padding: 28px 32px; width: 420px; max-width: 92vw;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+      animation: fadeIn 0.2s ease-out;
+    }
+    .region-panel h3 {
+      color: #fff; font-size: 1.1rem; margin-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .region-panel .rp-sub { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 18px; }
+    .region-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
+    }
+    .region-btn {
+      padding: 12px 0; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+      background: rgba(255,255,255,0.06); color: #e0e0e0;
+      font-size: 0.9rem; font-weight: 600; cursor: pointer;
+      transition: all 0.15s;
+    }
+    .region-btn:hover {
+      background: rgba(100,181,246,0.25); border-color: rgba(100,181,246,0.5); color: #fff;
+      transform: translateY(-2px);
+    }
+    .region-btn.active {
+      background: rgba(100,181,246,0.35); border-color: #64b5f6; color: #fff;
+    }
+    .region-close {
+      display: block; margin: 16px auto 0; padding: 8px 28px;
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+      background: transparent; color: rgba(255,255,255,0.5); font-size: 0.8rem;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .region-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+    @media (max-width: 600px) {
+      body { padding: 20px 12px; } .card { padding: 20px 16px; } header h1 { font-size: 1.6rem; }
+      .city-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .city-card { padding: 14px 10px; } .city-card .c-val { font-size: 1.8rem; }
+      .my-summary { flex-direction: column; text-align: center; }
+      .my-summary .s-data { justify-content: center; }
+      #district-map-svg .district-label { font-size: 7px; }
+      #district-map-svg .district-val { font-size: 6px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>한국 미세먼지 실시간 현황</h1>
+    <p class="subtitle">에어코리아 공식 데이터 기반 실시간 대기질 모니터링</p>
+    <div class="status-bar">
+      <span class="badge badge-live"><span class="dot"></span> 실시간</span>
+      <span class="badge badge-src">에어코리아 (환경부)</span>
+      <span class="badge badge-time" id="update-time">업데이트 중...</span>
+      <span class="badge badge-refresh" id="refresh-btn" title="새로고침"><span class="ri">&#x21bb;</span> 새로고침</span>
+    </div>
+  </header>
+
+  <!-- 내 지역 행정구역 지도 -->
+  <div class="card">
+    <h2>&#x1F4CD; 내 지역 대기질 <span class="h2-sub" id="region-label">위치 확인 중...</span></h2>
+    <div id="my-summary-container">
+      <div class="map-loading"><span class="sp"></span>위치 정보를 가져오는 중...</div>
+    </div>
+    <div id="district-map-container">
+      <div class="map-loading"><span class="sp"></span>행정구역 지도를 불러오는 중...</div>
+    </div>
+    <div class="legend" id="map-legend" style="display:none">
+      <div class="legend-item"><div class="legend-color" style="background:#4caf50"></div>좋음 (0~15)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#2196f3"></div>보통 (16~35)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#ff9800"></div>나쁨 (36~75)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#f44336"></div>매우나쁨 (76+)</div>
+      <div class="legend-item"><div class="legend-color" style="background:#bdbdbd"></div>데이터 없음</div>
+      <div class="legend-item" style="opacity:0.5">* = PM10 기준</div>
+    </div>
+  </div>
+
+  <!-- 주요 도시 -->
+  <div class="card">
+    <h2>주요 도시 대기질</h2>
+    <div class="city-grid" id="city-grid"></div>
+  </div>
+
+  <!-- 등급 안내 -->
+  <div class="card">
+    <h2>한국 대기질 등급 기준</h2>
+    <table class="grade-table">
+      <thead><tr><th>등급</th><th>PM2.5 (&#13197;/&#13221;)</th><th>PM10 (&#13197;/&#13221;)</th><th>행동 요령</th></tr></thead>
+      <tbody>
+        <tr><td><span class="grade-dot dot-good"></span>좋음</td><td>0 ~ 15</td><td>0 ~ 30</td><td>야외활동 적합</td></tr>
+        <tr><td><span class="grade-dot dot-mod"></span>보통</td><td>16 ~ 35</td><td>31 ~ 80</td><td>민감군 장시간 야외활동 주의</td></tr>
+        <tr><td><span class="grade-dot dot-bad"></span>나쁨</td><td>36 ~ 75</td><td>81 ~ 150</td><td>야외활동 자제, 마스크 착용</td></tr>
+        <tr><td><span class="grade-dot dot-vbad"></span>매우나쁨</td><td>76 이상</td><td>151 이상</td><td>실외활동 금지</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 참고 사이트 -->
+  <div class="card">
+    <h2>참고 사이트</h2>
+    <div class="links">
+      <a href="https://www.airkorea.or.kr/web/" target="_blank" rel="noopener">에어코리아<small>환경부 실시간 대기질</small></a>
+      <a href="https://cleanair.seoul.go.kr/" target="_blank" rel="noopener">서울시 대기환경정보<small>서울 지역 상세 데이터</small></a>
+      <a href="https://www.airkorea.or.kr/web/dustForecast" target="_blank" rel="noopener">대기질 예보<small>오늘/내일/모레 예보</small></a>
+      <a href="https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15073861" target="_blank" rel="noopener">공공데이터포털<small>에어코리아 API</small></a>
+    </div>
+  </div>
+
+  <footer>
+    <p>데이터 출처: 한국환경공단 에어코리아 (환경부) | <a href="https://www.airkorea.or.kr" target="_blank">airkorea.or.kr</a></p>
+    <p>1시간마다 자동 갱신</p>
+  </footer>
+</div>
+
+<!-- 툴팁 -->
+<div class="map-tooltip" id="tooltip"></div>
+
+<!-- 지역 선택 오버레이 -->
+<div class="region-overlay" id="region-overlay">
+  <div class="region-panel">
+    <h3>&#x1F4CD; 지역 선택</h3>
+    <div class="rp-sub">테스트용 - F1 두 번 눌러 열기 / ESC로 닫기</div>
+    <div class="region-grid" id="region-grid"></div>
+    <button class="region-close" id="region-close-btn">닫기 (ESC)</button>
+  </div>
+</div>
+
+<script>
+// ─── 설정 ───
+const REFRESH_INTERVAL = 60 * 60 * 1000;
+let userSido = null;
+let topoData = null;
+let currentStations = [];
+let stationAddrMap = {}; // stationName → TopoJSON district name
+
+const CITIES = [
+  { name: '서울', sido: '서울' }, { name: '부산', sido: '부산' },
+  { name: '인천', sido: '인천' }, { name: '대구', sido: '대구' },
+  { name: '대전', sido: '대전' }, { name: '광주', sido: '광주' },
+  { name: '울산', sido: '울산' }, { name: '세종', sido: '세종' },
+  { name: '수원', sido: '경기', filter: '수원' },
+  { name: '제주', sido: '제주' },
+  { name: '창원', sido: '경남', filter: '창원' },
+  { name: '청주', sido: '충북', filter: '청주' },
+];
+
+const STATE_MAP = {
+  '서울특별시':'서울','부산광역시':'부산','대구광역시':'대구','인천광역시':'인천',
+  '광주광역시':'광주','대전광역시':'대전','울산광역시':'울산','세종특별자치시':'세종',
+  '경기도':'경기','강원특별자치도':'강원','강원도':'강원','충청북도':'충북',
+  '충청남도':'충남','전북특별자치도':'전북','전라북도':'전북','전라남도':'전남',
+  '경상북도':'경북','경상남도':'경남','제주특별자치도':'제주',
+};
+
+// 시도명 → TopoJSON 통계청 코드 앞2자리
+const SIDO_CODES = {
+  '서울':'11','부산':'21','대구':'22','인천':'23','광주':'24','대전':'25',
+  '울산':'26','세종':'29','경기':'31','강원':'32','충북':'33','충남':'34',
+  '전북':'35','전남':'36','경북':'37','경남':'38','제주':'39',
+};
+
+const SIDO_CENTERS = [
+  {name:'서울',lat:37.5665,lng:126.978},{name:'부산',lat:35.1796,lng:129.0756},
+  {name:'대구',lat:35.8714,lng:128.6014},{name:'인천',lat:37.4563,lng:126.7052},
+  {name:'광주',lat:35.1595,lng:126.8526},{name:'대전',lat:36.3504,lng:127.3845},
+  {name:'울산',lat:35.5384,lng:129.3114},{name:'세종',lat:36.48,lng:127.289},
+  {name:'경기',lat:37.275,lng:127.0094},{name:'강원',lat:37.8228,lng:128.1555},
+  {name:'충북',lat:36.6357,lng:127.4913},{name:'충남',lat:36.5184,lng:126.8},
+  {name:'전북',lat:35.7175,lng:127.153},{name:'전남',lat:34.8679,lng:126.991},
+  {name:'경북',lat:36.4919,lng:128.8889},{name:'경남',lat:35.4606,lng:128.2132},
+  {name:'제주',lat:33.4996,lng:126.5312},
+];
+
+// ─── 등급 유틸 ───
+function gradeInfo(g) {
+  switch(String(g)){
+    case '1': return {label:'좋음',cls:'gr-good',color:'#4caf50'};
+    case '2': return {label:'보통',cls:'gr-mod',color:'#2196f3'};
+    case '3': return {label:'나쁨',cls:'gr-bad',color:'#ff9800'};
+    case '4': return {label:'매우나쁨',cls:'gr-vbad',color:'#f44336'};
+    default:  return {label:'-',cls:'gr-load',color:'#bdbdbd'};
+  }
+}
+
+function pm25Color(val) {
+  const n = parseInt(val);
+  if (isNaN(n)) return '#bdbdbd';
+  if (n <= 15) return '#4caf50';
+  if (n <= 35) return '#2196f3';
+  if (n <= 75) return '#ff9800';
+  return '#f44336';
+}
+
+function pm10Color(val) {
+  const n = parseInt(val);
+  if (isNaN(n)) return '#bdbdbd';
+  if (n <= 30) return '#4caf50';
+  if (n <= 80) return '#2196f3';
+  if (n <= 150) return '#ff9800';
+  return '#f44336';
+}
+
+function pm25ToGrade(val) {
+  const n = parseInt(val);
+  if (isNaN(n)) return gradeInfo(null);
+  if (n <= 15) return gradeInfo('1');
+  if (n <= 35) return gradeInfo('2');
+  if (n <= 75) return gradeInfo('3');
+  return gradeInfo('4');
+}
+
+function pm10ToGrade(val) {
+  const n = parseInt(val);
+  if (isNaN(n)) return gradeInfo(null);
+  if (n <= 30) return gradeInfo('1');
+  if (n <= 80) return gradeInfo('2');
+  if (n <= 150) return gradeInfo('3');
+  return gradeInfo('4');
+}
+
+// 측정소의 대표 색상: PM2.5 우선, 없으면 PM10 사용
+function stationColor(st) {
+  if (st.pm25Value && st.pm25Value !== '-') return pm25Color(st.pm25Value);
+  if (st.pm10Value && st.pm10Value !== '-') return pm10Color(st.pm10Value);
+  return '#bdbdbd';
+}
+
+function stationGrade(st) {
+  if (st.pm25Grade) return gradeInfo(st.pm25Grade);
+  if (st.pm25Value && st.pm25Value !== '-') return pm25ToGrade(st.pm25Value);
+  if (st.pm10Grade) return gradeInfo(st.pm10Grade);
+  if (st.pm10Value && st.pm10Value !== '-') return pm10ToGrade(st.pm10Value);
+  return gradeInfo(null);
+}
+
+// 측정소의 대표 수치 (표시용)
+function stationMainValue(st) {
+  if (st.pm25Value && st.pm25Value !== '-') return st.pm25Value;
+  if (st.pm10Value && st.pm10Value !== '-') return st.pm10Value;
+  return '';
+}
+
+function stationMainLabel(st) {
+  if (st.pm25Value && st.pm25Value !== '-') return 'PM2.5';
+  if (st.pm10Value && st.pm10Value !== '-') return 'PM10';
+  return '';
+}
+
+function vv(x) { return (!x || x === '-') ? '-' : x; }
+
+function findNearestSido(lat, lng) {
+  let min = Infinity, r = '서울';
+  SIDO_CENTERS.forEach(s => { const d = (s.lat-lat)**2+(s.lng-lng)**2; if(d<min){min=d;r=s.name;} });
+  return r;
+}
+
+function pickStation(items, filter) {
+  if (!items?.length) return null;
+  let f = filter ? items.filter(i => i.stationName?.includes(filter)) : items;
+  if (!f.length) f = items;
+  return f.find(i => i.pm25Value && i.pm25Value !== '-') || f[0];
+}
+
+// ─── 역지오코딩 ───
+async function reverseGeocode(lat, lng) {
+  const headers = { 'User-Agent': 'AirQualityDashboard/1.0' };
+  try {
+    // 상세 주소 (동 단위)
+    const res1 = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=ko`, { headers });
+    const j1 = await res1.json();
+
+    let state = j1.address?.state || j1.address?.province || '';
+    const city = j1.address?.city || j1.address?.county || j1.address?.town || '';
+
+    // state가 없으면 zoom=8로 도/광역시 레벨 재조회
+    if (!state || !STATE_MAP[state]) {
+      const res2 = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=ko&zoom=8`, { headers });
+      const j2 = await res2.json();
+      state = j2.address?.state || j2.address?.province || state;
+    }
+
+    return { state, city, sido: STATE_MAP[state] || null };
+  } catch { return { state:'', city:'', sido:null }; }
+}
+
+// ─── API ───
+async function fetchBulkSido(sidoNames) {
+  const unique = [...new Set(sidoNames)];
+  const res = await fetch(`/api/realtime-bulk?sido=${unique.join(',')}`);
+  if (!res.ok) throw new Error('API 호출 실패');
+  return res.json();
+}
+
+// ─── 측정소 주소 → 행정구역 매핑 구축 ───
+function parseDistrictFromAddr(addr) {
+  const parts = addr.split(/\s+/);
+  let city = '', gu = '';
+  for (const p of parts) {
+    if ((p.endsWith('시') || p.endsWith('군')) && p.length > 1
+        && !p.includes('특별') && !p.includes('광역')) {
+      city = p;
+    } else if (p.endsWith('구') && city.endsWith('시') && p.length > 1) {
+      gu = p;
+      break;
+    }
+  }
+  return { full: city + gu, city };
+}
+
+async function buildStationAddrMap(sido, districtNames) {
+  try {
+    const res = await fetch(`/api/station-list/${encodeURIComponent(sido)}`);
+    const list = await res.json();
+    if (!Array.isArray(list) || list.length === 0) return;
+
+    const map = {};
+    for (const st of list) {
+      const addr = st.addr || '';
+      const stName = st.stationName || '';
+      if (!addr || !stName) continue;
+
+      const { full, city } = parseDistrictFromAddr(addr);
+
+      // 1) 시+구 전체 매치 (수원시장안구)
+      if (full && districtNames.includes(full)) {
+        map[stName] = full;
+      }
+      // 2) 시만 매치 (부천시) - 해당 시+구가 TopoJSON에 없을 때
+      else if (city && districtNames.includes(city)) {
+        map[stName] = city;
+      }
+      // 3) 구만 매치 (서울 종로구 등 - 광역시/특별시)
+      else {
+        for (const p of addr.split(/\s+/)) {
+          if (p.endsWith('구') && p.length > 1 && districtNames.includes(p)) {
+            map[stName] = p;
+            break;
+          }
+        }
+      }
+    }
+    Object.assign(stationAddrMap, map);
+    console.log(`측정소 주소 매핑 완료: ${Object.keys(stationAddrMap).length}개 측정소`);
+  } catch (e) {
+    console.error('측정소 주소 매핑 실패:', e);
+  }
+}
+
+// ─── 측정소 → 행정구역 매칭 ───
+function matchStationToDistrict(districtName, stations) {
+  // 0) 단일 행정구역 (세종 등) - 모든 측정소가 해당 구역이므로 대표 측정소 반환
+  if (stations.length > 0 && districtName.includes('세종')) {
+    return stations.find(st => st.pm25Value && st.pm25Value !== '-')
+      || stations.find(st => st.pm10Value && st.pm10Value !== '-')
+      || stations[0];
+  }
+
+  // 1) 주소 기반 매칭 (가장 정확)
+  const addrMatched = stations.filter(st => stationAddrMap[st.stationName] === districtName);
+  if (addrMatched.length > 0) {
+    // PM2.5 데이터 있는 측정소 우선, 없으면 PM10이라도 있는 것, 최후엔 아무거나
+    return addrMatched.find(st => st.pm25Value && st.pm25Value !== '-')
+      || addrMatched.find(st => st.pm10Value && st.pm10Value !== '-')
+      || addrMatched[0];
+  }
+
+  // 2) 이름 기반 폴백
+  const clean = districtName.replace(/특별시|광역시|특별자치시|특별자치도|도$/g, '').trim();
+  const parts = clean.replace(/시$|군$|구$/g, '').trim();
+
+  for (const st of stations) {
+    const sn = st.stationName || '';
+    if (clean.includes(sn) || sn.includes(parts)) return st;
+  }
+
+  const prefix = parts.slice(0, 2);
+  if (prefix.length >= 2) {
+    for (const st of stations) {
+      if (st.stationName?.includes(prefix)) return st;
+    }
+  }
+
+  return null;
+}
+
+// ─── D3 행정구역 지도 렌더링 ───
+function renderDistrictMap(sido, stations) {
+  const container = document.getElementById('district-map-container');
+  if (!topoData) {
+    container.innerHTML = '<div class="map-loading">지도 데이터를 불러올 수 없습니다.</div>';
+    return;
+  }
+
+  const objectName = Object.keys(topoData.objects)[0];
+  const allFeatures = topojson.feature(topoData, topoData.objects[objectName]).features;
+
+  const sidoCode = SIDO_CODES[sido];
+  if (!sidoCode) {
+    container.innerHTML = '<div class="map-loading">해당 지역 지도가 없습니다.</div>';
+    return;
+  }
+
+  const features = allFeatures.filter(f => {
+    const code = String(f.properties.code || f.properties.SIG_CD || f.properties.adm_cd || '');
+    return code.startsWith(sidoCode);
+  });
+
+  if (features.length === 0) {
+    container.innerHTML = '<div class="map-loading">해당 지역 데이터가 없습니다.</div>';
+    return;
+  }
+
+  container.innerHTML = '';
+  document.getElementById('map-legend').style.display = 'flex';
+
+  const width = Math.min(container.clientWidth || 896, 896);
+  const height = Math.max(400, width * 0.7);
+
+  const svg = d3.select(container)
+    .append('svg')
+    .attr('id', 'district-map-svg')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet');
+
+  const fc = { type: 'FeatureCollection', features };
+  const projection = d3.geoMercator().fitSize([width - 40, height - 40], fc);
+  // 단일 행정구역(세종 등)일 때 과도한 확대 방지
+  if (features.length <= 2) {
+    const maxScale = 30000;
+    if (projection.scale() > maxScale) projection.scale(maxScale);
+    // 중심 재설정
+    const cent = d3.geoCentroid(fc);
+    projection.center(cent).translate([width / 2, height / 2]);
+  } else {
+    projection.translate([projection.translate()[0] + 20, projection.translate()[1] + 20]);
+  }
+  const pathGen = d3.geoPath().projection(projection);
+
+  const tooltip = document.getElementById('tooltip');
+
+  // 지도 그리기
+  svg.selectAll('.district')
+    .data(features)
+    .enter()
+    .append('path')
+    .attr('class', 'district')
+    .attr('d', pathGen)
+    .attr('fill', d => {
+      const name = d.properties.name || d.properties.SIG_KOR_NM || '';
+      const st = matchStationToDistrict(name, stations);
+      return st ? stationColor(st) : '#bdbdbd';
+    })
+    .on('mousemove', (event, d) => {
+      const name = d.properties.name || d.properties.SIG_KOR_NM || '';
+      const st = matchStationToDistrict(name, stations);
+      let html = `<div class="tt-name">${name}</div>`;
+      if (st) {
+        const info = stationGrade(st);
+        const mainLbl = stationMainLabel(st);
+        html += `<span class="tt-badge" style="background:${info.color}">${info.label}</span>`;
+        if (mainLbl) html += ` <span style="opacity:0.5;font-size:0.72rem">(${mainLbl} 기준)</span>`;
+        html += '<br>';
+        html += `PM2.5: <strong>${vv(st.pm25Value)}</strong> | PM10: <strong>${vv(st.pm10Value)}</strong><br>`;
+        html += `O3: ${vv(st.o3Value)} | NO2: ${vv(st.no2Value)}<br>`;
+        html += `<span style="opacity:0.5;font-size:0.72rem">${st.stationName} 측정소</span>`;
+      } else {
+        html += '<span style="opacity:0.5">측정 데이터 없음</span>';
+      }
+      tooltip.innerHTML = html;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (event.clientX + 14) + 'px';
+      tooltip.style.top = (event.clientY - 10) + 'px';
+    })
+    .on('mouseleave', () => { tooltip.style.display = 'none'; });
+
+  // 라벨
+  svg.selectAll('.district-label')
+    .data(features)
+    .enter()
+    .append('text')
+    .attr('class', 'district-label')
+    .attr('x', d => pathGen.centroid(d)[0])
+    .attr('y', d => pathGen.centroid(d)[1] - 2)
+    .text(d => {
+      const name = d.properties.name || d.properties.SIG_KOR_NM || '';
+      return name.replace(/특별시|광역시|특별자치시|특별자치도/g, '').trim();
+    });
+
+  // 수치 값 (PM2.5 우선, 없으면 PM10)
+  svg.selectAll('.district-val')
+    .data(features)
+    .enter()
+    .append('text')
+    .attr('class', 'district-val')
+    .attr('x', d => pathGen.centroid(d)[0])
+    .attr('y', d => pathGen.centroid(d)[1] + 9)
+    .text(d => {
+      const name = d.properties.name || d.properties.SIG_KOR_NM || '';
+      const st = matchStationToDistrict(name, stations);
+      if (!st) return '';
+      const val = stationMainValue(st);
+      const lbl = stationMainLabel(st);
+      return val ? (lbl === 'PM10' ? `${val}*` : val) : '';
+    });
+}
+
+// ─── 내 지역 로드 ───
+async function loadMyRegion(lat, lng) {
+  const sumContainer = document.getElementById('my-summary-container');
+  const label = document.getElementById('region-label');
+
+  const geo = await reverseGeocode(lat, lng);
+  const sido = geo.sido || findNearestSido(lat, lng);
+  userSido = sido;
+
+  const regionText = geo.city ? `${geo.state} ${geo.city}` : geo.state || sido;
+  label.textContent = `- ${regionText}`;
+  stationAddrMap = {};
+
+  try {
+    const res = await fetch(`/api/realtime/${encodeURIComponent(sido)}`);
+    const items = await res.json();
+    if (!items?.length) throw new Error('데이터 없음');
+
+    // 모든 측정소 사용 (PM2.5 없어도 PM10으로 표시)
+    // 행정구역 변경으로 다른 시도에 속한 측정소 보완 (군위군→대구 등)
+    const EXTRA_SIDO = { '경북': ['대구'] };
+    if (EXTRA_SIDO[sido]) {
+      for (const extra of EXTRA_SIDO[sido]) {
+        try {
+          const r2 = await fetch(`/api/realtime/${encodeURIComponent(extra)}`);
+          const extra_items = await r2.json();
+          if (Array.isArray(extra_items)) items.push(...extra_items);
+        } catch(e) {}
+      }
+    }
+    currentStations = items;
+
+    // 대표 측정소: PM2.5 있는 것 > PM10 있는 것 > 아무거나
+    const rep = items.find(i => i.pm25Value && i.pm25Value !== '-')
+      || items.find(i => i.pm10Value && i.pm10Value !== '-')
+      || items[0];
+
+    if (!rep) throw new Error('측정 데이터 없음');
+
+    const info = stationGrade(rep);
+    const mainVal = stationMainValue(rep) || '-';
+    const mainLbl = stationMainLabel(rep) || 'PM2.5';
+
+    sumContainer.innerHTML = `
+      <div class="my-summary ${info.cls}">
+        <div class="s-icon">&#x1F4CD;</div>
+        <div class="s-info">
+          <div class="s-region">${regionText}</div>
+          <div class="s-station">대표: ${rep.stationName} 측정소</div>
+          <div class="s-time">${rep.dataTime || ''} 측정</div>
+        </div>
+        <div class="s-grade"><div class="gv">${mainVal}</div><div class="gl">${mainLbl} ${info.label}</div></div>
+        <div class="s-data">
+          <div class="sd"><div class="sl">PM2.5</div><div class="sv">${vv(rep.pm25Value)}</div></div>
+          <div class="sd"><div class="sl">PM10</div><div class="sv">${vv(rep.pm10Value)}</div></div>
+          <div class="sd"><div class="sl">O3</div><div class="sv">${vv(rep.o3Value)}</div></div>
+          <div class="sd"><div class="sl">NO2</div><div class="sv">${vv(rep.no2Value)}</div></div>
+          <div class="sd"><div class="sl">CO</div><div class="sv">${vv(rep.coValue)}</div></div>
+        </div>
+      </div>
+    `;
+
+    // 주소 기반 측정소→행정구역 매핑 구축 후 지도 렌더링
+    if (topoData) {
+      const objName = Object.keys(topoData.objects)[0];
+      const allF = topojson.feature(topoData, topoData.objects[objName]).features;
+      const sCode = SIDO_CODES[sido];
+      const dNames = allF
+        .filter(f => String(f.properties.code || '').startsWith(sCode))
+        .map(f => f.properties.name || '');
+      await buildStationAddrMap(sido, dNames);
+      // 행정구역 변경으로 다른 시도 측정소 주소도 빌드
+      const EXTRA_SIDO = { '경북': ['대구'] };
+      if (EXTRA_SIDO[sido]) {
+        for (const extra of EXTRA_SIDO[sido]) {
+          await buildStationAddrMap(extra, dNames);
+        }
+      }
+    }
+    renderDistrictMap(sido, currentStations);
+  } catch (e) {
+    sumContainer.innerHTML = `<div class="my-summary gr-load" style="justify-content:center">${sido} 지역 데이터를 불러올 수 없습니다.</div>`;
+  }
+}
+
+// ─── 도시 그리드 ───
+function renderLoading() {
+  document.getElementById('city-grid').innerHTML = CITIES.map(c =>
+    `<div class="city-card gr-load"><div class="c-name">${c.name}</div><div class="c-station">불러오는 중...</div><div class="c-val">--</div><div class="c-label">로딩</div></div>`
+  ).join('');
+}
+
+function renderCityCard(city, station) {
+  if (!station) return `<div class="city-card gr-load"><div class="c-name">${city.name}</div><div class="c-station">데이터 없음</div><div class="c-val">--</div><div class="c-label">오류</div></div>`;
+  const pm25 = vv(station.pm25Value);
+  const info = station.pm25Grade ? gradeInfo(station.pm25Grade) : pm25ToGrade(pm25);
+  return `
+    <div class="city-card ${info.cls}">
+      <div class="c-name">${city.name}</div>
+      <div class="c-station">${station.stationName} (${station.dataTime||''})</div>
+      <div class="c-val">${pm25}</div>
+      <div class="c-label">PM2.5 ${info.label}</div>
+      <div class="c-data">
+        <span><span class="lb">PM10</span>${vv(station.pm10Value)}</span>
+        <span><span class="lb">CAI</span>${vv(station.khaiValue)}</span>
+        <span><span class="lb">O3</span>${vv(station.o3Value)}</span>
+      </div>
+    </div>`;
+}
+
+async function loadAllData() {
+  const btn = document.getElementById('refresh-btn');
+  btn.classList.add('spinning');
+  renderLoading();
+  try {
+    const bulkData = await fetchBulkSido(CITIES.map(c => c.sido));
+    document.getElementById('city-grid').innerHTML = CITIES.map(city =>
+      renderCityCard(city, pickStation(bulkData[city.sido]||[], city.filter))
+    ).join('');
+  } catch(e) { console.error('도시 데이터 로드 실패:', e); }
+
+  document.getElementById('update-time').textContent =
+    new Date().toLocaleString('ko-KR',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' 기준';
+  btn.classList.remove('spinning');
+}
+
+// ─── 초기화 ───
+async function init() {
+  // 1. 지도 데이터 로드
+  try {
+    const res = await fetch('/api/geodata');
+    if (res.ok) topoData = await res.json();
+  } catch(e) { console.error('지도 데이터 로드 실패:', e); }
+
+  // 2. 위치 요청
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      pos => loadMyRegion(pos.coords.latitude, pos.coords.longitude),
+      () => {
+        document.getElementById('my-summary-container').innerHTML =
+          '<div class="my-summary gr-load" style="justify-content:center">위치 권한이 거부되어 서울 기준으로 표시합니다.</div>';
+        document.getElementById('region-label').textContent = '- 서울';
+        loadMyRegion(37.5665, 126.9780);
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  } else {
+    loadMyRegion(37.5665, 126.9780);
+  }
+
+  // 3. 도시 데이터
+  loadAllData();
+  setInterval(() => { loadAllData(); }, REFRESH_INTERVAL);
+}
+
+document.getElementById('refresh-btn').addEventListener('click', () => {
+  loadAllData();
+  if (userSido) {
+    navigator.geolocation?.getCurrentPosition(
+      pos => loadMyRegion(pos.coords.latitude, pos.coords.longitude),
+      () => loadMyRegion(37.5665, 126.9780)
+    );
+  }
+});
+
+init();
+
+// ─── F1 더블클릭 지역 선택 ───
+(function() {
+  const overlay = document.getElementById('region-overlay');
+  const grid = document.getElementById('region-grid');
+  let lastF1 = 0;
+
+  // 버튼 생성
+  SIDO_CENTERS.forEach(s => {
+    const btn = document.createElement('button');
+    btn.className = 'region-btn';
+    btn.textContent = s.name;
+    btn.addEventListener('click', () => {
+      // 활성 표시
+      grid.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // 해당 지역으로 전환
+      document.getElementById('region-label').textContent = `- ${s.name} (수동)`;
+      loadMyRegion(s.lat, s.lng);
+      loadAllData();
+      // 닫기
+      overlay.classList.remove('open');
+    });
+    grid.appendChild(btn);
+  });
+
+  // F1 더블클릭 감지
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F1') {
+      e.preventDefault();
+      const now = Date.now();
+      if (now - lastF1 < 500) {
+        // 현재 지역 활성 표시
+        grid.querySelectorAll('.region-btn').forEach(b => {
+          b.classList.toggle('active', b.textContent === userSido);
+        });
+        overlay.classList.add('open');
+        lastF1 = 0;
+      } else {
+        lastF1 = now;
+      }
+    }
+    if (e.key === 'Escape') {
+      overlay.classList.remove('open');
+    }
+  });
+
+  // 오버레이 바깥 클릭으로 닫기
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+
+  document.getElementById('region-close-btn').addEventListener('click', () => {
+    overlay.classList.remove('open');
+  });
+})();
+</script>
+</body>
+</html>
