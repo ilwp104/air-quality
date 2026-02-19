@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>한국 미세먼지 실시간 현황</title>
+  <meta name="google-adsense-account" content="ca-pub-2601124884291683">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601124884291683" crossorigin="anonymous"></script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
   <style>
@@ -112,6 +114,10 @@
     .links a:hover { background: rgba(102,126,234,0.3); border-color: rgba(102,126,234,0.5); color: #fff; transform: translateY(-2px); }
     .links a small { display: block; font-size: 0.72rem; opacity: 0.6; margin-top: 4px; }
 
+    /* 광고 */
+    .ad-container { margin: 20px 0; text-align: center; min-height: 90px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border-radius: 12px; overflow: hidden; }
+    .ad-container ins { width: 100%; }
+
     footer { text-align: center; margin-top: 32px; color: rgba(255,255,255,0.4); font-size: 0.75rem; line-height: 1.8; }
     footer a { color: rgba(255,255,255,0.5); }
 
@@ -181,6 +187,12 @@
     </div>
   </header>
 
+  <!-- 상단 광고 -->
+  <div class="ad-container">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2601124884291683" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
   <!-- 내 지역 행정구역 지도 -->
   <div class="card">
     <h2>&#x1F4CD; 내 지역 대기질 <span class="h2-sub" id="region-label">위치 확인 중...</span></h2>
@@ -229,6 +241,12 @@
       <a href="https://www.airkorea.or.kr/web/dustForecast" target="_blank" rel="noopener">대기질 예보<small>오늘/내일/모레 예보</small></a>
       <a href="https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15073861" target="_blank" rel="noopener">공공데이터포털<small>에어코리아 API</small></a>
     </div>
+  </div>
+
+  <!-- 하단 광고 -->
+  <div class="ad-container">
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2601124884291683" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <footer>
