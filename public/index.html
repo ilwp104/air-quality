@@ -76,6 +76,29 @@
     .my-summary .sd .sl { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; opacity: 0.6; }
     .my-summary .sd .sv { font-size: 1.15rem; font-weight: 700; margin-top: 2px; }
 
+    /* 날씨 행 */
+    .weather-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .weather-row .w-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      min-width: 70px;
+    }
+    .weather-row .w-icon { font-size: 1.2rem; }
+    .weather-row .w-val { font-weight: 700; color: #fff; font-size: 0.95rem; }
+    .weather-row .w-lbl { font-size: 0.6rem; opacity: 0.5; }
+    .weather-row .w-time { font-size: 0.65rem; opacity: 0.4; margin-left: auto; align-self: center; }
+
     /* ─── 도시 그리드 ─── */
     .city-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
     .city-card { border-radius: 14px; padding: 20px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; overflow: hidden; }
@@ -193,6 +216,7 @@
     <div id="my-summary-container">
       <div class="map-loading"><span class="sp"></span>위치 정보를 가져오는 중...</div>
     </div>
+    <div id="weather-container"></div>
     <div id="district-map-container">
       <div class="map-loading"><span class="sp"></span>행정구역 지도를 불러오는 중...</div>
     </div>
@@ -702,6 +726,31 @@ async function loadMyRegion(lat, lng) {
         </div>
       </div>
     `;
+
+    // 날씨 데이터 로드
+    try {
+      const wRes = await fetch(`/api/weather?lat=${lat}&lng=${lng}`);
+      const w = await wRes.json();
+      if (!w.error) {
+        const wc = document.getElementById('weather-container');
+        const skyEmoji = {'맑음':'☀️','구름많음':'⛅','흐림':'☁️','비':'🌧️','눈':'🌨️','비/눈':'🌧️','빗방울':'🌦️','빗방울눈날림':'🌦️','눈날림':'🌨️'}[w.sky] || '🌤️';
+        const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+        const wd = w.windDirection !== null ? dirs[Math.round(w.windDirection / 22.5) % 16] : '';
+        let html = '<div class="weather-row">';
+        html += `<div class="w-item"><div class="w-icon">${skyEmoji}</div><div class="w-val">${w.sky}</div><div class="w-lbl">하늘</div></div>`;
+        html += `<div class="w-item"><div class="w-icon">🌡️</div><div class="w-val">${w.temperature !== null ? w.temperature + '°' : '-'}</div><div class="w-lbl">기온</div></div>`;
+        html += `<div class="w-item"><div class="w-icon">💧</div><div class="w-val">${w.humidity !== null ? w.humidity + '%' : '-'}</div><div class="w-lbl">습도</div></div>`;
+        html += `<div class="w-item"><div class="w-icon">💨</div><div class="w-val">${w.windSpeed !== null ? w.windSpeed + 'm/s ' + wd : '-'}</div><div class="w-lbl">풍속</div></div>`;
+        html += `<div class="w-item"><div class="w-icon">🌧️</div><div class="w-val">${w.precipitation || '0'}</div><div class="w-lbl">강수(mm)</div></div>`;
+        html += `<div class="w-item"><div class="w-icon">🥶</div><div class="w-val">${w.windChill !== null ? w.windChill + '°' : '-'}</div><div class="w-lbl">체감</div></div>`;
+        if (w.uvIndex !== null) {
+          html += `<div class="w-item"><div class="w-icon">☀️</div><div class="w-val">${w.uvIndex}</div><div class="w-lbl">UV ${w.uvGrade || ''}</div></div>`;
+        }
+        html += `<div class="w-time">${w.baseTime || ''} 기준</div>`;
+        html += '</div>';
+        wc.innerHTML = html;
+      }
+    } catch (e) { console.error('날씨 로드 실패:', e); }
 
     // 주소 기반 측정소→행정구역 매핑 구축 후 지도 렌더링
     if (topoData) {

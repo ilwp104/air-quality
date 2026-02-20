@@ -427,6 +427,24 @@
       width: 100%;
     }
 
+    /* 날씨 카드 */
+    .weather-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 12px;
+    }
+    .weather-item {
+      text-align: center;
+      padding: 14px 8px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .weather-icon { font-size: 1.5rem; margin-bottom: 6px; }
+    .weather-value { font-size: 1.2rem; font-weight: 700; color: #fff; }
+    .weather-label { font-size: 0.7rem; opacity: 0.6; margin-top: 4px; }
+    .weather-time { font-size: 0.7rem; opacity: 0.5; margin-top: 10px; text-align: right; }
+
     @media (max-width: 480px) {
       body { padding: 20px 12px; }
       .card { padding: 20px 16px; }
@@ -464,6 +482,12 @@
           위치 정보를 가져오는 중...
         </div>
       </div>
+    </div>
+
+    <!-- 날씨 정보 -->
+    <div class="card" id="weather-card" style="display:none">
+      <h2>&#x1F324; 내 위치 날씨 <span style="font-size:0.7rem;font-weight:400;opacity:0.5" id="weather-time"></span></h2>
+      <div class="weather-grid" id="weather-grid"></div>
     </div>
 
     <!-- 주요 도시 -->
@@ -719,6 +743,48 @@
       }
     }
 
+    // ─── 날씨 로드 ───
+    async function loadWeather(lat, lng) {
+      try {
+        const res = await fetch(`/api/weather?lat=${lat}&lng=${lng}`);
+        const w = await res.json();
+        if (w.error) throw new Error(w.error);
+
+        const card = document.getElementById('weather-card');
+        const grid = document.getElementById('weather-grid');
+        card.style.display = '';
+
+        const skyEmoji = {'맑음':'☀️','구름많음':'⛅','흐림':'☁️','비':'🌧️','눈':'🌨️','비/눈':'🌧️','빗방울':'🌦️','빗방울눈날림':'🌦️','눈날림':'🌨️'}[w.sky] || '🌤️';
+        const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+        const windDir = w.windDirection !== null ? dirs[Math.round(w.windDirection / 22.5) % 16] : '';
+
+        let items = [
+          { icon: skyEmoji, value: w.sky, label: '하늘상태' },
+          { icon: '🌡️', value: w.temperature !== null ? w.temperature + '°' : '-', label: '기온' },
+          { icon: '💧', value: w.humidity !== null ? w.humidity + '%' : '-', label: '습도' },
+          { icon: '💨', value: w.windSpeed !== null ? w.windSpeed + 'm/s ' + windDir : '-', label: '풍속/풍향' },
+          { icon: '🌧️', value: w.precipitation || '0', label: '강수량(mm)' },
+          { icon: '🥶', value: w.windChill !== null ? w.windChill + '°' : '-', label: '체감온도' },
+        ];
+        if (w.uvIndex !== null) {
+          items.push({ icon: '☀️', value: w.uvIndex + ' ' + (w.uvGrade || ''), label: '자외선지수' });
+        }
+
+        grid.innerHTML = items.map(item => `
+          <div class="weather-item">
+            <div class="weather-icon">${item.icon}</div>
+            <div class="weather-value">${item.value}</div>
+            <div class="weather-label">${item.label}</div>
+          </div>
+        `).join('');
+
+        const timeEl = document.getElementById('weather-time');
+        if (timeEl) timeEl.textContent = w.baseTime + ' 기준';
+      } catch (e) {
+        console.error('날씨 로드 실패:', e);
+      }
+    }
+
     // ─── 위치 요청 ───
     function requestLocation() {
       if (!navigator.geolocation) {
@@ -733,6 +799,7 @@
           initMap(userLat, userLng);
           loadMapStations();
           loadMyLocationAqi(userLat, userLng);
+          loadWeather(userLat, userLng);
         },
         (err) => {
           // 위치 거부 시 서울 중심으로 표시
@@ -833,10 +900,13 @@
       const results = await Promise.all(CITIES.map(fetchCityAqi));
       document.getElementById('city-grid').innerHTML = results.map(renderCityCard).join('');
 
-      // 지도 갱신
+      // 지도 & 날씨 갱신
       if (map) {
         loadMapStations();
-        if (userLat && userLng) loadMyLocationAqi(userLat, userLng);
+        if (userLat && userLng) {
+          loadMyLocationAqi(userLat, userLng);
+          loadWeather(userLat, userLng);
+        }
       }
 
       // 시간 갱신
