@@ -379,11 +379,9 @@ function pm10ToGrade(val) {
   return gradeInfo('4');
 }
 
-// 측정소의 대표 색상: PM2.5 우선, 없으면 PM10 사용
+// 측정소의 대표 색상: stationGrade와 동일 로직 사용
 function stationColor(st) {
-  if (st.pm25Value && st.pm25Value !== '-') return pm25Color(st.pm25Value);
-  if (st.pm10Value && st.pm10Value !== '-') return pm10Color(st.pm10Value);
-  return '#bdbdbd';
+  return stationGrade(st).color;
 }
 
 function stationGrade(st) {
