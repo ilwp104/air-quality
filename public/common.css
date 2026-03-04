@@ -1,0 +1,296 @@
+/* ─── 공통 베이스 ─── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', 'Malgun Gothic', sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  min-height: 100vh;
+  padding: 96px 20px 20px;
+  color: #e0e0e0;
+}
+
+.container { max-width: 960px; margin: 0 auto; }
+
+.card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  font-size: 1.15rem;
+  margin-bottom: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card h2 .h2-sub {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.5;
+}
+
+/* ─── 네비게이션 ─── */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(26,26,46,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 20px;
+}
+
+.nav-logo {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+}
+
+.nav-links a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #fff;
+  border-bottom-color: #64b5f6;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* ─── 푸터 ─── */
+.site-footer {
+  max-width: 960px;
+  margin: 40px auto 0;
+  padding: 32px 20px 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.footer-col h4 {
+  color: #fff;
+  font-size: 0.85rem;
+  margin-bottom: 12px;
+}
+
+.footer-col p {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.8;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col li {
+  font-size: 0.78rem;
+  line-height: 2;
+}
+
+.footer-col a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover {
+  color: #90caf9;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-bottom p {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ─── 광고 컨테이너 ─── */
+.ad-container {
+  margin: 24px 0;
+  text-align: center;
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ad-container ins { width: 100%; }
+
+/* ─── 교육 콘텐츠 ─── */
+.edu-content { line-height: 1.85; }
+.edu-section { margin-bottom: 24px; }
+.edu-section h3 { color: #90caf9; font-size: 1.05rem; margin-bottom: 10px; }
+.edu-section p { color: rgba(255,255,255,0.75); font-size: 0.92rem; }
+.edu-more {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 24px;
+  background: rgba(100,181,246,0.15);
+  border: 1px solid rgba(100,181,246,0.3);
+  border-radius: 8px;
+  color: #90caf9;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.edu-more:hover { background: rgba(100,181,246,0.3); color: #fff; }
+
+/* ─── 콘텐츠 페이지 전용 ─── */
+.content-body { line-height: 1.9; }
+.content-body h3 {
+  color: #90caf9;
+  font-size: 1.1rem;
+  margin: 28px 0 12px;
+}
+.content-body h3:first-child { margin-top: 0; }
+.content-body p {
+  color: rgba(255,255,255,0.78);
+  font-size: 0.92rem;
+  margin-bottom: 14px;
+}
+.content-body ul, .content-body ol {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+  margin: 10px 0 16px 20px;
+}
+.content-body li { margin-bottom: 6px; line-height: 1.7; }
+.content-body strong { color: #fff; }
+.content-body .highlight-box {
+  background: rgba(100,181,246,0.1);
+  border-left: 3px solid #64b5f6;
+  padding: 16px 20px;
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.8);
+}
+.content-body .warning-box {
+  background: rgba(244,67,54,0.1);
+  border-left: 3px solid #f44336;
+  padding: 16px 20px;
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.8);
+}
+
+/* 등급 카드 (가이드용) */
+.grade-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+.grade-card {
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+}
+.grade-card .gc-label { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+.grade-card .gc-range { font-size: 0.8rem; opacity: 0.8; margin-bottom: 8px; }
+.grade-card .gc-desc { font-size: 0.82rem; opacity: 0.9; line-height: 1.6; }
+.gc-good { background: linear-gradient(135deg, #1b5e20, #2e7d32); color: #c8e6c9; }
+.gc-mod { background: linear-gradient(135deg, #0277bd, #0288d1); color: #b3e5fc; }
+.gc-bad { background: linear-gradient(135deg, #e65100, #f57c00); color: #fff3e0; }
+.gc-vbad { background: linear-gradient(135deg, #b71c1c, #c62828); color: #ffcdd2; }
+
+/* 링크 그리드 */
+.links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+.links a {
+  display: block;
+  padding: 14px 20px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  text-decoration: none;
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.links a:hover {
+  background: rgba(102,126,234,0.3);
+  border-color: rgba(102,126,234,0.5);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.links a small { display: block; font-size: 0.72rem; opacity: 0.6; margin-top: 4px; }
+
+/* ─── 반응형 ─── */
+@media (max-width: 600px) {
+  body { padding: 72px 12px 12px; }
+  .card { padding: 20px 16px; }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 56px;
+    left: 0; right: 0;
+    background: rgba(26,26,46,0.98);
+    padding: 16px 20px;
+    gap: 4px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 10px 0; }
+  .nav-toggle { display: block; }
+
+  .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .grade-cards { grid-template-columns: 1fr 1fr; }
+}

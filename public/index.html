@@ -3,19 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>한국 미세먼지 실시간 현황</title>
+  <title>한국 미세먼지 실시간 현황 - 미세먼지 정보 포털</title>
+  <meta name="description" content="한국 전역 미세먼지(PM2.5/PM10) 실시간 현황을 확인하세요. 에어코리아 공공데이터 기반 행정구역별 대기질 지도, 주요 도시 대기질, 날씨 정보를 제공합니다.">
+  <meta name="keywords" content="미세먼지, PM2.5, PM10, 대기질, 실시간, 에어코리아, 대기오염, 한국, 미세먼지 현황, 초미세먼지">
+  <meta name="author" content="미세먼지 정보 포털">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="한국 미세먼지 실시간 현황 - 미세먼지 정보 포털">
+  <meta property="og:description" content="에어코리아 공공데이터 기반 실시간 대기질 모니터링. 행정구역별 미세먼지 지도, 주요 도시 대기질, 날씨 정보.">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="한국 미세먼지 실시간 현황">
+  <meta name="twitter:description" content="에어코리아 기반 실시간 대기질 모니터링 서비스">
   <meta name="google-adsense-account" content="ca-pub-2601124884291683">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601124884291683" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/common.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', 'Malgun Gothic', '맑은 고딕', sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-      min-height: 100vh; padding: 40px 20px; color: #e0e0e0;
-    }
-    .container { max-width: 960px; margin: 0 auto; }
+    /* body/container/card 는 common.css에서 로드 - 아래는 대시보드 전용 스타일 */
     header { text-align: center; margin-bottom: 36px; }
     header h1 { font-size: 2.2rem; color: #fff; margin-bottom: 8px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); }
     header .subtitle { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
@@ -30,10 +36,6 @@
     .badge-refresh:hover { background: rgba(100,181,246,0.3); }
     .badge-refresh.spinning .ri { animation: spin 1s linear infinite; }
     @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-
-    .card { background: rgba(255,255,255,0.06); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 28px 32px; margin-bottom: 20px; }
-    .card h2 { font-size: 1.15rem; margin-bottom: 20px; color: #fff; display: flex; align-items: center; gap: 8px; }
-    .card h2 .h2-sub { font-size: 0.75rem; font-weight: 400; opacity: 0.5; }
 
     /* ─── 행정구역 지도 ─── */
     #district-map-svg { width: 100%; background: rgba(255,255,255,0.03); border-radius: 12px; }
@@ -131,18 +133,7 @@
     .grade-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; vertical-align: middle; }
     .dot-good { background: #4caf50; } .dot-mod { background: #0288d1; } .dot-bad { background: #ff9800; } .dot-vbad { background: #f44336; }
 
-    /* 링크 */
-    .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
-    .links a { display: block; padding: 14px 20px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; text-decoration: none; color: #ccc; font-size: 0.9rem; font-weight: 500; transition: all 0.2s; }
-    .links a:hover { background: rgba(102,126,234,0.3); border-color: rgba(102,126,234,0.5); color: #fff; transform: translateY(-2px); }
-    .links a small { display: block; font-size: 0.72rem; opacity: 0.6; margin-top: 4px; }
-
-    /* 광고 */
-    .ad-container { margin: 20px 0; text-align: center; min-height: 90px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.03); border-radius: 12px; overflow: hidden; }
-    .ad-container ins { width: 100%; }
-
-    footer { text-align: center; margin-top: 32px; color: rgba(255,255,255,0.4); font-size: 0.75rem; line-height: 1.8; }
-    footer a { color: rgba(255,255,255,0.5); }
+    /* 링크, 광고, 푸터는 common.css에서 로드 */
 
     /* ─── 지역 선택 오버레이 ─── */
     .region-overlay {
@@ -187,7 +178,7 @@
     .region-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
     @media (max-width: 600px) {
-      body { padding: 20px 12px; } .card { padding: 20px 16px; } header h1 { font-size: 1.6rem; }
+      header h1 { font-size: 1.6rem; }
       .city-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
       .city-card { padding: 14px 10px; } .city-card .c-val { font-size: 1.8rem; }
       .my-summary { flex-direction: column; text-align: center; }
@@ -198,6 +189,20 @@
   </style>
 </head>
 <body>
+
+<!-- 네비게이션 -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">미세먼지 정보 포털</a>
+    <div class="nav-links" id="nav-links">
+      <a href="/" class="active">실시간 현황</a>
+      <a href="/guide.html">미세먼지 가이드</a>
+      <a href="/about.html">사이트 소개</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="메뉴">&#9776;</button>
+  </div>
+</nav>
+
 <div class="container">
   <header>
     <h1>한국 미세먼지 실시간 현황</h1>
@@ -250,6 +255,26 @@
     </table>
   </div>
 
+  <!-- 미세먼지 알아보기 (교육 콘텐츠) -->
+  <div class="card">
+    <h2>미세먼지 알아보기</h2>
+    <div class="edu-content">
+      <div class="edu-section">
+        <h3>미세먼지(PM2.5)란?</h3>
+        <p>미세먼지(PM2.5)는 지름이 2.5마이크로미터(&#181;m) 이하인 초미세 입자상 물질입니다. 사람 머리카락 지름(약 70&#181;m)의 약 1/30 크기로, 눈에 보이지 않을 만큼 작아 호흡 시 폐 깊숙이 침투하여 혈관까지 도달할 수 있습니다. 세계보건기구(WHO)는 미세먼지를 1급 발암물질로 지정하고 있으며, 장기간 노출 시 호흡기 질환, 심혈관 질환, 폐암 등의 위험이 증가합니다. PM10(미세먼지)은 지름 10&#181;m 이하의 입자로 코와 기관지에서 일부 걸러지지만, PM2.5보다 입자가 커도 건강에 해로울 수 있습니다.</p>
+      </div>
+      <div class="edu-section">
+        <h3>계절별 미세먼지 특징</h3>
+        <p>한국의 미세먼지는 뚜렷한 계절 패턴을 보입니다. 봄철(3~5월)에는 중국발 황사와 미세먼지가 편서풍을 타고 유입되어 농도가 가장 높습니다. 겨울철(12~2월)에는 난방 사용 증가와 대기 정체(역전층)로 국내 발생 미세먼지가 축적됩니다. 반면 여름철(6~8월)에는 남풍과 강수의 영향으로 대기질이 가장 양호합니다. 가을은 이동성 고기압으로 비교적 맑지만, 11월부터 서서히 농도가 올라갑니다.</p>
+      </div>
+      <div class="edu-section">
+        <h3>미세먼지 대처 요령</h3>
+        <p>미세먼지 '나쁨' 이상일 때는 가급적 외출을 자제하고, 외출 시 식약처 인증 KF94 보건용 마스크를 착용하세요. 일반 면마스크로는 미세먼지를 차단할 수 없습니다. 실내에서는 공기청정기를 가동하고, 환기는 미세먼지 농도가 낮은 시간대(보통 오후 2~4시)에 짧게(5~10분) 하는 것이 좋습니다. 귀가 후에는 손씻기, 양치, 세안을 반드시 하고, 충분한 수분 섭취를 권장합니다. 특히 어린이, 노인, 호흡기·심혈관 질환자는 '보통' 수준에서도 장시간 야외 활동을 주의해야 합니다.</p>
+      </div>
+      <a href="/guide.html" class="edu-more">미세먼지 상세 가이드 보기 &rarr;</a>
+    </div>
+  </div>
+
   <!-- 참고 사이트 -->
   <div class="card">
     <h2>참고 사이트</h2>
@@ -261,17 +286,47 @@
     </div>
   </div>
 
-  <!-- 하단 광고 -->
-  <div class="ad-container">
+  <!-- 하단 광고: 콘텐츠 로딩 후에만 표시 -->
+  <div class="ad-container" id="ad-container" style="display:none">
     <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2601124884291683" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <footer>
-    <p>데이터 출처: 한국환경공단 에어코리아 (환경부) | <a href="https://www.airkorea.or.kr" target="_blank">airkorea.or.kr</a></p>
-    <p>1시간마다 자동 갱신</p>
-  </footer>
 </div>
+
+<!-- 푸터 -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>미세먼지 정보 포털</h4>
+      <p>에어코리아 공공데이터 기반 실시간 대기질 모니터링 서비스</p>
+    </div>
+    <div class="footer-col">
+      <h4>페이지</h4>
+      <ul>
+        <li><a href="/">실시간 현황</a></li>
+        <li><a href="/guide.html">미세먼지 가이드</a></li>
+        <li><a href="/about.html">사이트 소개</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>법적 고지</h4>
+      <ul>
+        <li><a href="/privacy.html">개인정보처리방침</a></li>
+        <li><a href="/terms.html">이용약관</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>데이터 출처</h4>
+      <ul>
+        <li><a href="https://www.airkorea.or.kr" target="_blank" rel="noopener">에어코리아 (환경부)</a></li>
+        <li><a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 미세먼지 정보 포털. 데이터 출처: 한국환경공단 에어코리아 (환경부) | 1시간마다 자동 갱신</p>
+  </div>
+</footer>
 
 <!-- 툴팁 -->
 <div class="map-tooltip" id="tooltip"></div>
@@ -812,6 +867,14 @@ async function loadAllData() {
   document.getElementById('update-time').textContent =
     new Date().toLocaleString('ko-KR',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit'}) + ' 기준';
   btn.classList.remove('spinning');
+
+  // 콘텐츠 로딩 완료 후 광고 표시
+  const adContainer = document.getElementById('ad-container');
+  if (adContainer && !adContainer.dataset.loaded) {
+    adContainer.style.display = '';
+    try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
+    adContainer.dataset.loaded = 'true';
+  }
 }
 
 // ─── 초기화 ───
@@ -910,6 +973,11 @@ init();
     overlay.classList.remove('open');
   });
 })();
+
+// ─── 네비게이션 모바일 토글 ───
+document.getElementById('nav-toggle').addEventListener('click', () => {
+  document.getElementById('nav-links').classList.toggle('open');
+});
 </script>
 </body>
 </html>
