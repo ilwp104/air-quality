@@ -230,6 +230,43 @@ body.light-mode .links a small{color:rgba(0,0,0,0.45) !important;}\
 body.light-mode .highlight-box{background:rgba(100,181,246,0.1) !important;color:rgba(0,0,0,0.7) !important;}\
 body.light-mode .warning-box{background:rgba(244,67,54,0.08) !important;color:rgba(0,0,0,0.7) !important;}\
 body.light-mode .cjs-updated,body.light-mode .cjs-visit-count{color:rgba(0,0,0,0.35) !important;}\
+\
+body.light-mode header h1{color:#1a1a2e !important;text-shadow:none !important;}\
+body.light-mode header .subtitle{color:rgba(0,0,0,0.5) !important;}\
+body.light-mode .badge-live{background:rgba(76,175,80,0.12) !important;color:#2e7d32 !important;border-color:rgba(76,175,80,0.3) !important;}\
+body.light-mode .badge-time{background:rgba(0,0,0,0.05) !important;color:rgba(0,0,0,0.6) !important;border-color:rgba(0,0,0,0.12) !important;}\
+body.light-mode .badge-src{background:rgba(0,150,136,0.1) !important;color:#00796b !important;border-color:rgba(0,150,136,0.25) !important;}\
+body.light-mode .badge-refresh{background:rgba(33,150,243,0.1) !important;color:#1565c0 !important;border-color:rgba(33,150,243,0.25) !important;}\
+body.light-mode .map-loading{color:rgba(0,0,0,0.4) !important;}\
+body.light-mode .map-loading .sp{border-color:rgba(0,0,0,0.12) !important;border-top-color:#1565c0 !important;}\
+body.light-mode .legend-item{color:rgba(0,0,0,0.6) !important;}\
+body.light-mode .legend-color{border-color:rgba(0,0,0,0.15) !important;}\
+body.light-mode .map-tooltip{background:#fff !important;color:#333 !important;border-color:rgba(0,0,0,0.12) !important;box-shadow:0 4px 20px rgba(0,0,0,0.15) !important;}\
+body.light-mode .map-tooltip .tt-name{color:#1a1a2e !important;}\
+body.light-mode .my-summary .s-station,body.light-mode .my-summary .s-time{color:inherit !important;}\
+body.light-mode .weather-row{background:rgba(0,0,0,0.03) !important;border-color:rgba(0,0,0,0.08) !important;}\
+body.light-mode .weather-row .w-val{color:#1a1a2e !important;}\
+body.light-mode .weather-row .w-lbl{color:rgba(0,0,0,0.5) !important;}\
+body.light-mode .weather-row .w-time{color:rgba(0,0,0,0.4) !important;}\
+body.light-mode .grade-table th{color:rgba(0,0,0,0.5) !important;}\
+body.light-mode .grade-table td{color:#333 !important;}\
+body.light-mode .grade-table th,body.light-mode .grade-table td{border-bottom-color:rgba(0,0,0,0.08) !important;}\
+body.light-mode .gr-load{background:rgba(0,0,0,0.05) !important;color:rgba(0,0,0,0.4) !important;}\
+body.light-mode .region-overlay{background:rgba(0,0,0,0.3) !important;}\
+body.light-mode .region-panel{background:#fff !important;border-color:rgba(0,0,0,0.12) !important;box-shadow:0 12px 48px rgba(0,0,0,0.2) !important;}\
+body.light-mode .region-panel h3{color:#1a1a2e !important;}\
+body.light-mode .region-panel .rp-sub{color:rgba(0,0,0,0.4) !important;}\
+body.light-mode .region-btn{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.12) !important;color:#333 !important;}\
+body.light-mode .region-btn:hover{background:rgba(33,150,243,0.12) !important;border-color:rgba(33,150,243,0.3) !important;color:#1565c0 !important;}\
+body.light-mode .region-btn.active{background:rgba(33,150,243,0.18) !important;border-color:#42a5f5 !important;color:#1565c0 !important;}\
+body.light-mode .region-close{border-color:rgba(0,0,0,0.15) !important;color:rgba(0,0,0,0.5) !important;}\
+body.light-mode #district-map-svg{background:rgba(0,0,0,0.02) !important;}\
+body.light-mode #district-map-svg .district{stroke:rgba(0,0,0,0.2) !important;}\
+body.light-mode #district-map-svg .district:hover{stroke:rgba(0,0,0,0.5) !important;}\
+body.light-mode .card h2 .h2-sub{color:rgba(0,0,0,0.4) !important;}\
+body.light-mode .edu-more{background:rgba(33,150,243,0.1) !important;border-color:rgba(33,150,243,0.3) !important;color:#1565c0 !important;}\
+body.light-mode .nav-links{background:rgba(255,255,255,0.98) !important;border-bottom-color:rgba(0,0,0,0.08) !important;}\
+body.light-mode .gc-good,.light-mode .gc-mod,.light-mode .gc-bad,.light-mode .gc-vbad{color:#fff !important;}\
 ';
 
   // --- 10. 인쇄 스타일 ---
@@ -566,7 +603,7 @@ body.light-mode .cjs-updated,body.light-mode .cjs-visit-count{color:rgba(0,0,0,0
       }, fs.label);
       if (fs.key === savedFontSize) btn.classList.add('active');
       btn.addEventListener('click', function () {
-        document.body.style.fontSize = fs.size;
+        document.documentElement.style.fontSize = fs.size;
         localStorage.setItem('fontSize', fs.key);
         qsa('.cjs-font-ctrl button').forEach(function (b) { b.classList.remove('active'); });
         btn.classList.add('active');
@@ -580,7 +617,7 @@ body.light-mode .cjs-updated,body.light-mode .cjs-visit-count{color:rgba(0,0,0,0
     // 저장된 글꼴 크기 복원
     var fontMap = { small: '14px', default: '16px', large: '18px' };
     if (fontMap[savedFontSize]) {
-      document.body.style.fontSize = fontMap[savedFontSize];
+      document.documentElement.style.fontSize = fontMap[savedFontSize];
     }
 
     // ============================================================
