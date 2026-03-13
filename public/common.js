@@ -266,7 +266,7 @@ html.light-mode #district-map-svg .district:hover{stroke:rgba(0,0,0,0.5) !import
 html.light-mode .card h2 .h2-sub{color:rgba(0,0,0,0.4) !important;}\
 html.light-mode .edu-more{background:rgba(33,150,243,0.1) !important;border-color:rgba(33,150,243,0.3) !important;color:#1565c0 !important;}\
 html.light-mode .nav-links{background:rgba(255,255,255,0.98) !important;border-bottom-color:rgba(0,0,0,0.08) !important;}\
-html.light-mode .gc-good,.light-mode .gc-mod,.light-mode .gc-bad,.light-mode .gc-vbad{color:#fff !important;}\
+html.light-mode .gc-good,html.light-mode .gc-mod,html.light-mode .gc-bad,html.light-mode .gc-vbad{color:#fff !important;}\
 html.light-mode .card h1{color:#1a1a2e !important;}\
 html.light-mode .card h1+p{color:rgba(0,0,0,0.5) !important;}\
 html.light-mode .faq-item{background:rgba(0,0,0,0.02) !important;border-color:rgba(0,0,0,0.08) !important;}\
@@ -275,6 +275,30 @@ html.light-mode .faq-item summary{color:#1565c0 !important;}\
 html.light-mode .faq-item summary::after{color:rgba(0,0,0,0.3) !important;}\
 html.light-mode .faq-answer{color:rgba(0,0,0,0.75) !important;}\
 html.light-mode .faq-count{color:#1565c0 !important;}\
+\
+html.light-mode .error-title{color:#1a1a2e !important;}\
+html.light-mode .error-desc{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .helpful-links a{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.1) !important;color:#333 !important;}\
+html.light-mode .helpful-links a:hover{background:rgba(102,126,234,0.12) !important;border-color:rgba(102,126,234,0.4) !important;color:#1a1a2e !important;}\
+\
+html.light-mode .compare-table th,html.light-mode .compare-table td{border-color:rgba(0,0,0,0.1) !important;}\
+html.light-mode .compare-table th{background:rgba(0,0,0,0.04) !important;color:#1565c0 !important;}\
+html.light-mode .compare-table td{color:#333 !important;}\
+html.light-mode .compare-table tr:hover td{background:rgba(0,0,0,0.03) !important;}\
+\
+html.light-mode .cjs-cookie-banner button{color:#fff !important;}\
+html.light-mode .cjs-top-btn:hover{color:#1a1a2e !important;}\
+html.light-mode .cjs-font-ctrl button:hover{color:#1a1a2e !important;}\
+html.light-mode .cjs-font-ctrl button.active{background:rgba(33,150,243,0.2) !important;border-color:#42a5f5 !important;color:#1565c0 !important;}\
+html.light-mode .cjs-theme-toggle:hover{background:rgba(0,0,0,0.08) !important;color:#1a1a2e !important;}\
+\
+html.light-mode .content-body ol{color:rgba(0,0,0,0.7) !important;}\
+html.light-mode .content-body a{color:#1565c0 !important;}\
+html.light-mode .content-body table{color:#333 !important;}\
+html.light-mode .content-body table th{color:#1565c0 !important;}\
+html.light-mode .content-body table td{color:#333 !important;border-bottom-color:rgba(0,0,0,0.08) !important;}\
+html.light-mode .content-body table thead tr{background:rgba(33,150,243,0.08) !important;color:#1565c0 !important;}\
+html.light-mode .ad-container{background:rgba(0,0,0,0.03) !important;}\
 ';
 
   // --- 10. 인쇄 스타일 ---
