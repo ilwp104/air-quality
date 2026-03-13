@@ -271,6 +271,66 @@ body {
 }
 .links a small { display: block; font-size: 0.72rem; opacity: 0.6; margin-top: 4px; }
 
+/* ─── 드롭다운 메뉴 ─── */
+.nav-dropdown {
+  position: relative;
+}
+.nav-dropdown > a {
+  cursor: pointer;
+}
+.nav-dropdown > a::after {
+  content: " ▾";
+  font-size: 0.65rem;
+  opacity: 0.5;
+}
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 180px;
+  padding: 8px 0;
+  margin-top: 8px;
+  background: rgba(26,26,46,0.98);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  z-index: 1001;
+}
+.nav-dropdown:hover .nav-dropdown-menu {
+  display: block;
+}
+.nav-dropdown-menu a {
+  display: block !important;
+  padding: 8px 18px !important;
+  font-size: 0.82rem !important;
+  color: rgba(255,255,255,0.65) !important;
+  border-bottom: none !important;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-dropdown-menu a:hover,
+.nav-dropdown-menu a.active {
+  background: rgba(100,181,246,0.15) !important;
+  color: #fff !important;
+}
+/* 라이트 모드 드롭다운 */
+html.light-mode .nav-dropdown-menu {
+  background: rgba(255,255,255,0.98) !important;
+  border-color: rgba(0,0,0,0.1) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
+}
+html.light-mode .nav-dropdown-menu a {
+  color: rgba(0,0,0,0.55) !important;
+}
+html.light-mode .nav-dropdown-menu a:hover,
+html.light-mode .nav-dropdown-menu a.active {
+  background: rgba(33,150,243,0.1) !important;
+  color: #1565c0 !important;
+}
+
 /* ─── 라이트 모드 ─── */
 html.light-mode body {
   background: linear-gradient(135deg, #e8eaf6 0%, #f5f5f5 50%, #e3f2fd 100%) !important;
@@ -384,6 +444,24 @@ html.light-mode .faq-count { color: #1565c0 !important; }
   .nav-links.open { display: flex; }
   .nav-links a { padding: 10px 0; }
   .nav-toggle { display: block; }
+
+  .nav-dropdown-menu {
+    display: block !important;
+    position: static !important;
+    transform: none !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 0 0 16px !important;
+  }
+  .nav-dropdown-menu a {
+    padding: 6px 0 !important;
+    font-size: 0.8rem !important;
+    opacity: 0.7;
+  }
+  .nav-dropdown > a::after { content: "" !important; }
 
   .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
   .grade-cards { grid-template-columns: 1fr 1fr; }
