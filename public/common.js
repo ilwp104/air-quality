@@ -182,91 +182,99 @@
   cursor:pointer;transition:all .2s;margin-left:8px;line-height:1;\
 }\
 .cjs-theme-toggle:hover{background:rgba(255,255,255,0.1);color:#fff;}\
-body.light-mode{\
+html.light-mode{\
   background:linear-gradient(135deg,#e8eaf6 0%,#f5f5f5 50%,#e3f2fd 100%) !important;\
   color:#333 !important;\
 }\
-body.light-mode .card{\
+html.light-mode .card{\
   background:rgba(255,255,255,0.85) !important;\
   border-color:rgba(0,0,0,0.1) !important;\
 }\
-body.light-mode .card h2{color:#1a1a2e !important;}\
-body.light-mode .content-body p,body.light-mode .content-body li,\
-body.light-mode .edu-content p{color:rgba(0,0,0,0.75) !important;}\
-body.light-mode .content-body h3,body.light-mode .edu-section h3{color:#0277bd !important;}\
-body.light-mode .content-body strong{color:#1a1a2e !important;}\
-body.light-mode .site-nav{background:rgba(255,255,255,0.95) !important;border-bottom-color:rgba(0,0,0,0.1) !important;}\
-body.light-mode .nav-logo{color:#1a1a2e !important;}\
-body.light-mode .nav-links a{color:rgba(0,0,0,0.5) !important;}\
-body.light-mode .nav-links a:hover,body.light-mode .nav-links a.active{color:#1a1a2e !important;}\
-body.light-mode .nav-toggle{color:#1a1a2e !important;}\
-body.light-mode .site-footer{border-top-color:rgba(0,0,0,0.1) !important;}\
-body.light-mode .footer-col h4{color:#1a1a2e !important;}\
-body.light-mode .footer-col p,body.light-mode .footer-col a,body.light-mode .footer-bottom p{color:rgba(0,0,0,0.5) !important;}\
-body.light-mode .cjs-top-btn,body.light-mode .cjs-font-ctrl button{\
+html.light-mode .card h2{color:#1a1a2e !important;}\
+html.light-mode .content-body p,html.light-mode .content-body li,\
+html.light-mode .edu-content p{color:rgba(0,0,0,0.75) !important;}\
+html.light-mode .content-body h3,html.light-mode .edu-section h3{color:#0277bd !important;}\
+html.light-mode .content-body strong{color:#1a1a2e !important;}\
+html.light-mode .site-nav{background:rgba(255,255,255,0.95) !important;border-bottom-color:rgba(0,0,0,0.1) !important;}\
+html.light-mode .nav-logo{color:#1a1a2e !important;}\
+html.light-mode .nav-links a{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .nav-links a:hover,html.light-mode .nav-links a.active{color:#1a1a2e !important;}\
+html.light-mode .nav-toggle{color:#1a1a2e !important;}\
+html.light-mode .site-footer{border-top-color:rgba(0,0,0,0.1) !important;}\
+html.light-mode .footer-col h4{color:#1a1a2e !important;}\
+html.light-mode .footer-col p,html.light-mode .footer-col a,html.light-mode .footer-bottom p{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .cjs-top-btn,html.light-mode .cjs-font-ctrl button{\
   background:rgba(255,255,255,0.85) !important;border-color:rgba(0,0,0,0.12) !important;\
   color:rgba(0,0,0,0.6) !important;\
 }\
-body.light-mode .cjs-breadcrumb{color:rgba(0,0,0,0.4) !important;}\
-body.light-mode .cjs-breadcrumb a{color:rgba(0,0,0,0.5) !important;}\
-body.light-mode .cjs-breadcrumb .current{color:rgba(0,0,0,0.7) !important;}\
-body.light-mode .cjs-breadcrumb .sep{color:rgba(0,0,0,0.25) !important;}\
-body.light-mode .cjs-toc{background:rgba(255,255,255,0.8) !important;border-color:rgba(0,0,0,0.1) !important;}\
-body.light-mode .cjs-toc .toc-title{color:#1a1a2e !important;}\
-body.light-mode .cjs-toc a{color:rgba(0,0,0,0.6) !important;}\
-body.light-mode .cjs-share a,body.light-mode .cjs-share button{\
+html.light-mode .cjs-breadcrumb{color:rgba(0,0,0,0.4) !important;}\
+html.light-mode .cjs-breadcrumb a{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .cjs-breadcrumb .current{color:rgba(0,0,0,0.7) !important;}\
+html.light-mode .cjs-breadcrumb .sep{color:rgba(0,0,0,0.25) !important;}\
+html.light-mode .cjs-toc{background:rgba(255,255,255,0.8) !important;border-color:rgba(0,0,0,0.1) !important;}\
+html.light-mode .cjs-toc .toc-title{color:#1a1a2e !important;}\
+html.light-mode .cjs-toc a{color:rgba(0,0,0,0.6) !important;}\
+html.light-mode .cjs-share a,html.light-mode .cjs-share button{\
   border-color:rgba(0,0,0,0.12) !important;background:rgba(0,0,0,0.04) !important;\
   color:rgba(0,0,0,0.6) !important;\
 }\
-body.light-mode .cjs-share-label{color:rgba(0,0,0,0.5) !important;}\
-body.light-mode .cjs-cookie-banner{\
+html.light-mode .cjs-share-label{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .cjs-cookie-banner{\
   background:rgba(255,255,255,0.95) !important;border-top-color:rgba(0,0,0,0.1) !important;\
   color:rgba(0,0,0,0.7) !important;\
 }\
-body.light-mode .cjs-theme-toggle{border-color:rgba(0,0,0,0.15) !important;color:rgba(0,0,0,0.6) !important;}\
-body.light-mode .links a{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.1) !important;color:#333 !important;}\
-body.light-mode .links a:hover{background:rgba(102,126,234,0.15) !important;}\
-body.light-mode .links a small{color:rgba(0,0,0,0.45) !important;}\
-body.light-mode .highlight-box{background:rgba(100,181,246,0.1) !important;color:rgba(0,0,0,0.7) !important;}\
-body.light-mode .warning-box{background:rgba(244,67,54,0.08) !important;color:rgba(0,0,0,0.7) !important;}\
-body.light-mode .cjs-updated,body.light-mode .cjs-visit-count{color:rgba(0,0,0,0.35) !important;}\
+html.light-mode .cjs-theme-toggle{border-color:rgba(0,0,0,0.15) !important;color:rgba(0,0,0,0.6) !important;}\
+html.light-mode .links a{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.1) !important;color:#333 !important;}\
+html.light-mode .links a:hover{background:rgba(102,126,234,0.15) !important;}\
+html.light-mode .links a small{color:rgba(0,0,0,0.45) !important;}\
+html.light-mode .highlight-box{background:rgba(100,181,246,0.1) !important;color:rgba(0,0,0,0.7) !important;}\
+html.light-mode .warning-box{background:rgba(244,67,54,0.08) !important;color:rgba(0,0,0,0.7) !important;}\
+html.light-mode .cjs-updated,html.light-mode .cjs-visit-count{color:rgba(0,0,0,0.35) !important;}\
 \
-body.light-mode header h1{color:#1a1a2e !important;text-shadow:none !important;}\
-body.light-mode header .subtitle{color:rgba(0,0,0,0.5) !important;}\
-body.light-mode .badge-live{background:rgba(76,175,80,0.12) !important;color:#2e7d32 !important;border-color:rgba(76,175,80,0.3) !important;}\
-body.light-mode .badge-time{background:rgba(0,0,0,0.05) !important;color:rgba(0,0,0,0.6) !important;border-color:rgba(0,0,0,0.12) !important;}\
-body.light-mode .badge-src{background:rgba(0,150,136,0.1) !important;color:#00796b !important;border-color:rgba(0,150,136,0.25) !important;}\
-body.light-mode .badge-refresh{background:rgba(33,150,243,0.1) !important;color:#1565c0 !important;border-color:rgba(33,150,243,0.25) !important;}\
-body.light-mode .map-loading{color:rgba(0,0,0,0.4) !important;}\
-body.light-mode .map-loading .sp{border-color:rgba(0,0,0,0.12) !important;border-top-color:#1565c0 !important;}\
-body.light-mode .legend-item{color:rgba(0,0,0,0.6) !important;}\
-body.light-mode .legend-color{border-color:rgba(0,0,0,0.15) !important;}\
-body.light-mode .map-tooltip{background:#fff !important;color:#333 !important;border-color:rgba(0,0,0,0.12) !important;box-shadow:0 4px 20px rgba(0,0,0,0.15) !important;}\
-body.light-mode .map-tooltip .tt-name{color:#1a1a2e !important;}\
-body.light-mode .my-summary .s-station,body.light-mode .my-summary .s-time{color:inherit !important;}\
-body.light-mode .weather-row{background:rgba(0,0,0,0.03) !important;border-color:rgba(0,0,0,0.08) !important;}\
-body.light-mode .weather-row .w-val{color:#1a1a2e !important;}\
-body.light-mode .weather-row .w-lbl{color:rgba(0,0,0,0.5) !important;}\
-body.light-mode .weather-row .w-time{color:rgba(0,0,0,0.4) !important;}\
-body.light-mode .grade-table th{color:rgba(0,0,0,0.5) !important;}\
-body.light-mode .grade-table td{color:#333 !important;}\
-body.light-mode .grade-table th,body.light-mode .grade-table td{border-bottom-color:rgba(0,0,0,0.08) !important;}\
-body.light-mode .gr-load{background:rgba(0,0,0,0.05) !important;color:rgba(0,0,0,0.4) !important;}\
-body.light-mode .region-overlay{background:rgba(0,0,0,0.3) !important;}\
-body.light-mode .region-panel{background:#fff !important;border-color:rgba(0,0,0,0.12) !important;box-shadow:0 12px 48px rgba(0,0,0,0.2) !important;}\
-body.light-mode .region-panel h3{color:#1a1a2e !important;}\
-body.light-mode .region-panel .rp-sub{color:rgba(0,0,0,0.4) !important;}\
-body.light-mode .region-btn{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.12) !important;color:#333 !important;}\
-body.light-mode .region-btn:hover{background:rgba(33,150,243,0.12) !important;border-color:rgba(33,150,243,0.3) !important;color:#1565c0 !important;}\
-body.light-mode .region-btn.active{background:rgba(33,150,243,0.18) !important;border-color:#42a5f5 !important;color:#1565c0 !important;}\
-body.light-mode .region-close{border-color:rgba(0,0,0,0.15) !important;color:rgba(0,0,0,0.5) !important;}\
-body.light-mode #district-map-svg{background:rgba(0,0,0,0.02) !important;}\
-body.light-mode #district-map-svg .district{stroke:rgba(0,0,0,0.2) !important;}\
-body.light-mode #district-map-svg .district:hover{stroke:rgba(0,0,0,0.5) !important;}\
-body.light-mode .card h2 .h2-sub{color:rgba(0,0,0,0.4) !important;}\
-body.light-mode .edu-more{background:rgba(33,150,243,0.1) !important;border-color:rgba(33,150,243,0.3) !important;color:#1565c0 !important;}\
-body.light-mode .nav-links{background:rgba(255,255,255,0.98) !important;border-bottom-color:rgba(0,0,0,0.08) !important;}\
-body.light-mode .gc-good,.light-mode .gc-mod,.light-mode .gc-bad,.light-mode .gc-vbad{color:#fff !important;}\
+html.light-mode header h1{color:#1a1a2e !important;text-shadow:none !important;}\
+html.light-mode header .subtitle{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .badge-live{background:rgba(76,175,80,0.12) !important;color:#2e7d32 !important;border-color:rgba(76,175,80,0.3) !important;}\
+html.light-mode .badge-time{background:rgba(0,0,0,0.05) !important;color:rgba(0,0,0,0.6) !important;border-color:rgba(0,0,0,0.12) !important;}\
+html.light-mode .badge-src{background:rgba(0,150,136,0.1) !important;color:#00796b !important;border-color:rgba(0,150,136,0.25) !important;}\
+html.light-mode .badge-refresh{background:rgba(33,150,243,0.1) !important;color:#1565c0 !important;border-color:rgba(33,150,243,0.25) !important;}\
+html.light-mode .map-loading{color:rgba(0,0,0,0.4) !important;}\
+html.light-mode .map-loading .sp{border-color:rgba(0,0,0,0.12) !important;border-top-color:#1565c0 !important;}\
+html.light-mode .legend-item{color:rgba(0,0,0,0.6) !important;}\
+html.light-mode .legend-color{border-color:rgba(0,0,0,0.15) !important;}\
+html.light-mode .map-tooltip{background:#fff !important;color:#333 !important;border-color:rgba(0,0,0,0.12) !important;box-shadow:0 4px 20px rgba(0,0,0,0.15) !important;}\
+html.light-mode .map-tooltip .tt-name{color:#1a1a2e !important;}\
+html.light-mode .my-summary .s-station,html.light-mode .my-summary .s-time{color:inherit !important;}\
+html.light-mode .weather-row{background:rgba(0,0,0,0.03) !important;border-color:rgba(0,0,0,0.08) !important;}\
+html.light-mode .weather-row .w-val{color:#1a1a2e !important;}\
+html.light-mode .weather-row .w-lbl{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .weather-row .w-time{color:rgba(0,0,0,0.4) !important;}\
+html.light-mode .grade-table th{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .grade-table td{color:#333 !important;}\
+html.light-mode .grade-table th,html.light-mode .grade-table td{border-bottom-color:rgba(0,0,0,0.08) !important;}\
+html.light-mode .gr-load{background:rgba(0,0,0,0.05) !important;color:rgba(0,0,0,0.4) !important;}\
+html.light-mode .region-overlay{background:rgba(0,0,0,0.3) !important;}\
+html.light-mode .region-panel{background:#fff !important;border-color:rgba(0,0,0,0.12) !important;box-shadow:0 12px 48px rgba(0,0,0,0.2) !important;}\
+html.light-mode .region-panel h3{color:#1a1a2e !important;}\
+html.light-mode .region-panel .rp-sub{color:rgba(0,0,0,0.4) !important;}\
+html.light-mode .region-btn{background:rgba(0,0,0,0.04) !important;border-color:rgba(0,0,0,0.12) !important;color:#333 !important;}\
+html.light-mode .region-btn:hover{background:rgba(33,150,243,0.12) !important;border-color:rgba(33,150,243,0.3) !important;color:#1565c0 !important;}\
+html.light-mode .region-btn.active{background:rgba(33,150,243,0.18) !important;border-color:#42a5f5 !important;color:#1565c0 !important;}\
+html.light-mode .region-close{border-color:rgba(0,0,0,0.15) !important;color:rgba(0,0,0,0.5) !important;}\
+html.light-mode #district-map-svg{background:rgba(0,0,0,0.02) !important;}\
+html.light-mode #district-map-svg .district{stroke:rgba(0,0,0,0.2) !important;}\
+html.light-mode #district-map-svg .district:hover{stroke:rgba(0,0,0,0.5) !important;}\
+html.light-mode .card h2 .h2-sub{color:rgba(0,0,0,0.4) !important;}\
+html.light-mode .edu-more{background:rgba(33,150,243,0.1) !important;border-color:rgba(33,150,243,0.3) !important;color:#1565c0 !important;}\
+html.light-mode .nav-links{background:rgba(255,255,255,0.98) !important;border-bottom-color:rgba(0,0,0,0.08) !important;}\
+html.light-mode .gc-good,.light-mode .gc-mod,.light-mode .gc-bad,.light-mode .gc-vbad{color:#fff !important;}\
+html.light-mode .card h1{color:#1a1a2e !important;}\
+html.light-mode .card h1+p{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .faq-item{background:rgba(0,0,0,0.02) !important;border-color:rgba(0,0,0,0.08) !important;}\
+html.light-mode .faq-item[open]{background:rgba(33,150,243,0.04) !important;border-color:rgba(33,150,243,0.2) !important;}\
+html.light-mode .faq-item summary{color:#1565c0 !important;}\
+html.light-mode .faq-item summary::after{color:rgba(0,0,0,0.3) !important;}\
+html.light-mode .faq-answer{color:rgba(0,0,0,0.75) !important;}\
+html.light-mode .faq-count{color:#1565c0 !important;}\
 ';
 
   // --- 10. 인쇄 스타일 ---
@@ -635,11 +643,11 @@ body.light-mode .gc-good,.light-mode .gc-mod,.light-mode .gc-bad,.light-mode .gc
 
       function applyTheme(mode) {
         if (mode === 'light') {
-          document.body.classList.add('light-mode');
+          document.documentElement.classList.add('light-mode');
           themeBtn.innerHTML = '&#9728;'; // 해 아이콘
           themeBtn.title = '다크 모드로 전환';
         } else {
-          document.body.classList.remove('light-mode');
+          document.documentElement.classList.remove('light-mode');
           themeBtn.innerHTML = '&#9790;'; // 달 아이콘
           themeBtn.title = '라이트 모드로 전환';
         }
@@ -648,7 +656,7 @@ body.light-mode .gc-good,.light-mode .gc-mod,.light-mode .gc-bad,.light-mode .gc
       applyTheme(savedTheme);
 
       themeBtn.addEventListener('click', function () {
-        var current = document.body.classList.contains('light-mode') ? 'light' : 'dark';
+        var current = document.documentElement.classList.contains('light-mode') ? 'light' : 'dark';
         var next = current === 'dark' ? 'light' : 'dark';
         applyTheme(next);
         localStorage.setItem('themeMode', next);
