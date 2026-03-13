@@ -277,6 +277,11 @@ html.light-mode .faq-item summary{color:#1565c0 !important;}\
 html.light-mode .faq-item summary::after{color:rgba(0,0,0,0.3) !important;}\
 html.light-mode .faq-answer{color:rgba(0,0,0,0.75) !important;}\
 html.light-mode .faq-count{color:#1565c0 !important;}\
+html.light-mode .faq-intro{color:rgba(0,0,0,0.65) !important;}\
+html.light-mode .faq-group-title{color:#1565c0 !important;border-bottom-color:rgba(33,150,243,0.2) !important;}\
+html.light-mode .faq-header h1{color:#1a1a2e !important;}\
+html.light-mode .faq-header p{color:rgba(0,0,0,0.5) !important;}\
+html.light-mode .card>p[style]{color:rgba(0,0,0,0.6) !important;}\
 \
 html.light-mode .error-title{color:#1a1a2e !important;}\
 html.light-mode .error-desc{color:rgba(0,0,0,0.5) !important;}\
