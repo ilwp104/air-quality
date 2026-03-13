@@ -354,6 +354,11 @@ app.get('/api/weather', async (req, res) => {
   }
 });
 
+// ─── 404 핸들링 ───
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+});
+
 // ─── 시작 ───
 app.listen(PORT, () => {
   console.log(`\n  미세먼지 대시보드 서버 시작!`);

@@ -17,6 +17,19 @@
   <meta name="google-adsense-account" content="ca-pub-2601124884291683">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601124884291683" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/common.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "사이트 소개 - 미세먼지 정보 포털",
+    "description": "에어코리아 공공데이터 기반 실시간 대기질 모니터링 서비스의 목적, 데이터 출처, 기술적 특징을 안내합니다.",
+    "url": "https://dustinfo.kr/about.html",
+    "inLanguage": "ko",
+    "publisher": {"@type": "Organization", "name": "미세먼지 정보 포털", "email": "kjhmlsoft@gmail.com"}
+  }
+  </script>
 </head>
 <body>
 
@@ -26,6 +39,7 @@
     <div class="nav-links" id="nav-links">
       <a href="/">실시간 현황</a>
       <a href="/guide.html">미세먼지 가이드</a>
+      <a href="/faq.html">자주 묻는 질문</a>
       <a href="/about.html" class="active">사이트 소개</a>
     </div>
     <button class="nav-toggle" id="nav-toggle" aria-label="메뉴">&#9776;</button>
@@ -135,11 +149,21 @@
       <p>에어코리아 공공데이터 기반 실시간 대기질 모니터링 서비스</p>
     </div>
     <div class="footer-col">
-      <h4>페이지</h4>
+      <h4>서비스</h4>
       <ul>
         <li><a href="/">실시간 현황</a></li>
         <li><a href="/guide.html">미세먼지 가이드</a></li>
+        <li><a href="/faq.html">자주 묻는 질문</a></li>
         <li><a href="/about.html">사이트 소개</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>건강 가이드</h4>
+      <ul>
+        <li><a href="/health.html">취약계층 건강 가이드</a></li>
+        <li><a href="/seasonal.html">계절별 대처법</a></li>
+        <li><a href="/purifier.html">공기청정기 가이드</a></li>
+        <li><a href="/comparison.html">국내외 기준 비교</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -147,18 +171,13 @@
       <ul>
         <li><a href="/privacy.html">개인정보처리방침</a></li>
         <li><a href="/terms.html">이용약관</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>데이터 출처</h4>
-      <ul>
-        <li><a href="https://www.airkorea.or.kr" target="_blank" rel="noopener">에어코리아 (환경부)</a></li>
+        <li><a href="https://www.airkorea.or.kr" target="_blank" rel="noopener">에어코리아</a></li>
         <li><a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>&copy; 2025 미세먼지 정보 포털. 데이터 출처: 한국환경공단 에어코리아 (환경부)</p>
+    <p>&copy; 2025-2026 미세먼지 정보 포털. 데이터 출처: 한국환경공단 에어코리아 (환경부)</p>
   </div>
 </footer>
 
@@ -167,5 +186,6 @@ document.getElementById('nav-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('open');
 });
 </script>
+<script src="/common.js"></script>
 </body>
 </html>

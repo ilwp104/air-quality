@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - 페이지를 찾을 수 없습니다 | 미세먼지 정보 포털</title>
+  <meta name="robots" content="noindex">
+  <link rel="stylesheet" href="/common.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <style>
+    .error-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: 40px 16px;
+    }
+    .error-code {
+      font-size: 8rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+    .error-title {
+      font-size: 1.5rem;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .error-desc {
+      color: rgba(255,255,255,0.6);
+      font-size: 1rem;
+      margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .helpful-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      width: 100%;
+      max-width: 640px;
+      margin-bottom: 32px;
+    }
+    .helpful-links a {
+      display: block;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.92rem;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .helpful-links a:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(102,126,234,0.5);
+      color: #fff;
+    }
+    .home-btn {
+      display: inline-block;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    .home-btn:hover {
+      opacity: 0.9;
+    }
+    @media (max-width: 480px) {
+      .error-code {
+        font-size: 5rem;
+      }
+      .error-title {
+        font-size: 1.2rem;
+      }
+      .helpful-links {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">미세먼지 정보 포털</a>
+    <div class="nav-links" id="nav-links">
+      <a href="/">실시간 현황</a>
+      <a href="/guide.html">미세먼지 가이드</a>
+      <a href="/faq.html">자주 묻는 질문</a>
+      <a href="/about.html">사이트 소개</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="메뉴">&#9776;</button>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="error-section">
+    <div class="error-code">404</div>
+    <h1 class="error-title">페이지를 찾을 수 없습니다</h1>
+    <p class="error-desc">요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다.</p>
+
+    <div class="helpful-links">
+      <a href="/">실시간 현황</a>
+      <a href="/guide.html">미세먼지 가이드</a>
+      <a href="/faq.html">자주 묻는 질문</a>
+      <a href="/health.html">취약계층 건강 가이드</a>
+      <a href="/purifier.html">공기청정기 가이드</a>
+      <a href="/about.html">사이트 소개</a>
+    </div>
+
+    <a href="/" class="home-btn">홈으로 돌아가기</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>미세먼지 정보 포털</h4>
+      <p>에어코리아 공공데이터 기반 실시간 대기질 모니터링 서비스</p>
+    </div>
+    <div class="footer-col">
+      <h4>서비스</h4>
+      <ul>
+        <li><a href="/">실시간 현황</a></li>
+        <li><a href="/guide.html">미세먼지 가이드</a></li>
+        <li><a href="/faq.html">자주 묻는 질문</a></li>
+        <li><a href="/about.html">사이트 소개</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>건강 가이드</h4>
+      <ul>
+        <li><a href="/health.html">취약계층 건강 가이드</a></li>
+        <li><a href="/seasonal.html">계절별 대처법</a></li>
+        <li><a href="/purifier.html">공기청정기 가이드</a></li>
+        <li><a href="/comparison.html">국내외 기준 비교</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>법적 고지</h4>
+      <ul>
+        <li><a href="/privacy.html">개인정보처리방침</a></li>
+        <li><a href="/terms.html">이용약관</a></li>
+        <li><a href="https://www.airkorea.or.kr" target="_blank" rel="noopener">에어코리아</a></li>
+        <li><a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025-2026 미세먼지 정보 포털. 데이터 출처: 한국환경공단 에어코리아 (환경부)</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    document.getElementById('nav-links').classList.toggle('open');
+  });
+</script>
+
+<script src="/common.js"></script>
+</body>
+</html>

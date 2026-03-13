@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>국내외 대기질 기준 비교 분석 - 미세먼지 정보 포털</title>
+  <meta name="description" content="한국, WHO, 미국 EPA, 중국, 일본, EU의 대기질 기준을 비교 분석합니다. PM2.5/PM10 기준치, AQI/CAI 등급 체계, 각국 환경기준의 차이점과 한국 대기질의 국제적 위치를 상세히 알아봅니다.">
+  <meta name="keywords" content="대기질 기준 비교, PM2.5 기준, WHO 권고, AQI, CAI, 미세먼지 등급, 환경부 기준, EPA, 중국 대기질, 일본 대기질, EU 대기질">
+  <meta name="author" content="미세먼지 정보 포털">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="국내외 대기질 기준 비교 분석 - 미세먼지 정보 포털">
+  <meta property="og:description" content="한국, WHO, 미국, 중국, 일본, EU의 대기질 기준을 비교 분석합니다. PM2.5/PM10 기준치와 등급 체계의 차이점을 상세히 알아봅니다.">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="국내외 대기질 기준 비교 분석">
+  <meta name="twitter:description" content="한국, WHO, 미국, 중국, 일본, EU의 대기질 기준을 비교 분석합니다.">
+  <meta name="google-adsense-account" content="ca-pub-2601124884291683">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601124884291683" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/common.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "국내외 대기질 기준 비교 분석",
+    "description": "한국, WHO, 미국 EPA, 중국, 일본, EU의 대기질 기준을 비교 분석합니다. PM2.5/PM10 기준치, AQI/CAI 등급 체계, 각국 환경기준의 차이점과 한국 대기질의 국제적 위치를 상세히 알아봅니다.",
+    "author": {
+      "@type": "Organization",
+      "name": "미세먼지 정보 포털"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "미세먼지 정보 포털"
+    },
+    "datePublished": "2025-01-15",
+    "dateModified": "2025-06-01",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://airquality.example.com/comparison.html"
+    }
+  }
+  </script>
+  <style>
+    .compare-table { width:100%; border-collapse:collapse; margin:16px 0; }
+    .compare-table th, .compare-table td { padding:12px 16px; text-align:center; font-size:0.85rem; border:1px solid rgba(255,255,255,0.1); }
+    .compare-table th { background:rgba(255,255,255,0.08); color:#90caf9; font-weight:600; }
+    .compare-table td { color:rgba(255,255,255,0.75); }
+    .compare-table tr:hover td { background:rgba(255,255,255,0.04); }
+    .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin:16px 0; }
+    .grade-good { color:#4caf50; font-weight:600; }
+    .grade-moderate { color:#2196f3; font-weight:600; }
+    .grade-bad { color:#ff9800; font-weight:600; }
+    .grade-worst { color:#f44336; font-weight:600; }
+  </style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">미세먼지 정보 포털</a>
+    <div class="nav-links" id="nav-links">
+      <a href="/">실시간 현황</a>
+      <a href="/guide.html">미세먼지 가이드</a>
+      <a href="/faq.html">자주 묻는 질문</a>
+      <a href="/about.html">사이트 소개</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="메뉴">&#9776;</button>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- 헤더 -->
+  <div class="card" style="text-align:center; margin-bottom:28px;">
+    <h1 style="font-size:1.8rem; color:#fff; margin-bottom:8px;">국내외 대기질 기준 비교 분석</h1>
+    <p style="color:rgba(255,255,255,0.6); font-size:0.92rem;">한국 · WHO · 미국 · 중국 · 일본 · EU — 각국 대기질 기준의 차이와 의미</p>
+  </div>
+
+  <!-- 목차 -->
+  <div class="card">
+    <h2>목차</h2>
+    <div class="content-body">
+      <ol style="line-height:2; color:rgba(255,255,255,0.75);">
+        <li><a href="#korea" style="color:#90caf9;">한국의 대기질 기준 (환경부)</a></li>
+        <li><a href="#who" style="color:#90caf9;">WHO 권고 기준 (2021년 개정)</a></li>
+        <li><a href="#usa" style="color:#90caf9;">미국 EPA (AQI)</a></li>
+        <li><a href="#china" style="color:#90caf9;">중국 대기질 기준</a></li>
+        <li><a href="#japan" style="color:#90caf9;">일본 대기질 기준</a></li>
+        <li><a href="#eu" style="color:#90caf9;">EU 대기질 기준</a></li>
+        <li><a href="#total-compare" style="color:#90caf9;">주요국 PM2.5 기준 비교 총정리표</a></li>
+        <li><a href="#korea-status" style="color:#90caf9;">한국의 대기질 현황과 국제 비교</a></li>
+        <li><a href="#tips" style="color:#90caf9;">알아두면 유용한 대기질 지수 해석법</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- 1. 한국의 대기질 기준 -->
+  <div class="card" id="korea">
+    <h2>1. 한국의 대기질 기준 (환경부)</h2>
+    <div class="content-body">
+      <h3>4단계 등급 시스템</h3>
+      <p>한국은 환경부 산하 한국환경공단이 운영하는 에어코리아 시스템을 통해 전국 대기질을 실시간으로 모니터링하고 있습니다. 대기오염도를 국민이 쉽게 이해할 수 있도록 <strong>통합대기환경지수(CAI, Comprehensive Air-quality Index)</strong>를 사용하며, 이를 4단계 등급으로 분류하여 발표합니다.</p>
+      <p>CAI는 SO₂(아황산가스), CO(일산화탄소), O₃(오존), NO₂(이산화질소), PM10(미세먼지), PM2.5(초미세먼지) 등 6가지 오염물질의 농도를 종합적으로 고려하여 0~500 범위의 점수로 산출합니다. 이 중 가장 높은 지수를 보이는 물질이 해당 시간대의 대표 오염물질이 됩니다.</p>
+      <p>4단계 등급 분류는 다음과 같습니다. <span class="grade-good">좋음(0~50)</span>은 대기오염 관련 질환자도 영향을 받지 않을 수준이며, <span class="grade-moderate">보통(51~100)</span>은 환자군에 만성 노출 시 경미한 영향이 유발될 수 있는 수준입니다. <span class="grade-bad">나쁨(101~250)</span>은 환자군과 민감군에게 유해한 영향이 유발될 수 있으며 일반인도 건강상 불쾌감을 경험할 수 있는 수준이고, <span class="grade-worst">매우나쁨(251~500)</span>은 환자군과 민감군에게 급성 노출 시 심각한 영향이 유발될 수 있으며 일반인도 약한 영향이 유발될 수 있는 수준입니다.</p>
+
+      <h3>PM2.5(초미세먼지) 예보 등급</h3>
+      <p>초미세먼지는 건강 영향이 가장 큰 대기오염물질로, 환경부는 별도의 예보 등급을 운영하고 있습니다.</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>등급</th>
+              <th>PM2.5 농도 (µg/m³)</th>
+              <th>행동 지침</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="grade-good">좋음</td>
+              <td>0 ~ 15</td>
+              <td>야외 활동에 지장 없음</td>
+            </tr>
+            <tr>
+              <td class="grade-moderate">보통</td>
+              <td>16 ~ 35</td>
+              <td>민감군은 장시간 야외 활동 시 주의</td>
+            </tr>
+            <tr>
+              <td class="grade-bad">나쁨</td>
+              <td>36 ~ 75</td>
+              <td>야외 활동 자제, 외출 시 마스크 착용</td>
+            </tr>
+            <tr>
+              <td class="grade-worst">매우나쁨</td>
+              <td>76 이상</td>
+              <td>야외 활동 금지, 실내 머물기 권고</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>PM10(미세먼지) 예보 등급</h3>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>등급</th>
+              <th>PM10 농도 (µg/m³)</th>
+              <th>행동 지침</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="grade-good">좋음</td>
+              <td>0 ~ 30</td>
+              <td>야외 활동에 지장 없음</td>
+            </tr>
+            <tr>
+              <td class="grade-moderate">보통</td>
+              <td>31 ~ 80</td>
+              <td>민감군은 장시간 야외 활동 시 주의</td>
+            </tr>
+            <tr>
+              <td class="grade-bad">나쁨</td>
+              <td>81 ~ 150</td>
+              <td>야외 활동 자제, 외출 시 마스크 착용</td>
+            </tr>
+            <tr>
+              <td class="grade-worst">매우나쁨</td>
+              <td>151 이상</td>
+              <td>야외 활동 금지, 실내 머물기 권고</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>환경기준 vs 예보등급의 차이</h3>
+      <p>여기서 주의할 점은 <strong>환경기준</strong>과 <strong>예보등급</strong>이 서로 다른 개념이라는 것입니다. 환경기준(대기환경기준)은 「환경정책기본법」에 따라 설정된 법적 기준으로, 연평균과 24시간 평균의 두 가지 시간 단위로 규정됩니다. 현행 PM2.5 환경기준은 연평균 15µg/m³, 24시간 평균 35µg/m³입니다. PM10은 연평균 50µg/m³, 24시간 평균 100µg/m³입니다.</p>
+      <p>반면 예보등급은 국민 건강 보호를 위한 <strong>행동 지침 기준</strong>으로, 실시간 또는 단기(내일/모레) 예측 농도에 기반합니다. 환경기준이 지역의 대기질 목표치를 설정하는 정책적 기준이라면, 예보등급은 해당 시점의 대기질 상태를 국민에게 알려 건강 보호 행동을 유도하는 소통 수단입니다.</p>
+      <p>예를 들어 PM2.5 24시간 환경기준은 35µg/m³이지만, 예보등급에서 '나쁨'은 36~75µg/m³ 구간입니다. 즉, 환경기준을 초과하더라도 예보등급이 '나쁨' 수준이지 바로 '매우나쁨'이 되는 것은 아닙니다. 환경기준의 초과 여부는 연간 달성 목표로 평가하는 반면, 예보등급은 매시간, 매일의 상태를 실시간으로 전달하는 역할을 합니다.</p>
+
+      <h3>한국 대기질 기준의 변천사</h3>
+      <p>한국의 대기질 기준은 국민 건강에 대한 인식이 높아지고 과학적 연구가 축적됨에 따라 점진적으로 강화되어 왔습니다. 특히 <strong>2018년</strong>은 한국 대기질 관리 역사에서 중요한 전환점이었습니다.</p>
+      <p>2015년 이전에는 PM2.5에 대한 별도의 환경기준이 없었습니다. PM10만 관리 대상이었으며, 초미세먼지의 건강 위험성에 대한 사회적 관심이 상대적으로 낮았습니다. 2015년 1월부터 PM2.5 환경기준이 처음 도입되어 연평균 25µg/m³, 24시간 평균 50µg/m³으로 설정되었습니다.</p>
+      <p>그러나 이 기준은 WHO 권고치보다 상당히 느슨하다는 비판이 지속되었고, 2016~2017년 겨울철 극심한 미세먼지 사태가 반복되면서 국민적 우려가 최고조에 달했습니다. 이에 정부는 2018년 3월 PM2.5 환경기준을 대폭 강화하여 연평균 15µg/m³, 24시간 평균 35µg/m³으로 하향 조정했습니다. 이는 기존 대비 연평균 기준 40%, 24시간 기준 30%나 강화된 것입니다.</p>
+      <p>동시에 예보등급도 기존 3단계(좋음·보통·나쁨)에서 4단계(좋음·보통·나쁨·매우나쁨)로 세분화되었고, '좋음' 등급의 상한도 하향 조정되었습니다. 이러한 기준 강화는 미세먼지 문제에 대한 정부의 적극적 대응 의지를 보여주는 것이었으며, 이후 다양한 감축 정책(석탄화력 가동 제한, 경유차 운행 제한, 비상저감조치 등)의 근거가 되었습니다.</p>
+      <div class="highlight-box">
+        2018년 기준 강화 이후 한국의 PM2.5 환경기준(연평균 15µg/m³)은 WHO의 2005년 과도 목표 3단계(IT-3)와 동일한 수준이 되었습니다. 그러나 2021년 개정된 WHO 최종 권고치(연평균 5µg/m³)와는 여전히 3배의 격차가 있어, 향후 추가 강화 논의가 불가피한 상황입니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. WHO 권고 기준 -->
+  <div class="card" id="who">
+    <h2>2. WHO 권고 기준 (2021년 개정)</h2>
+    <div class="content-body">
+      <h3>2021년 글로벌 대기질 가이드라인의 의미</h3>
+      <p>세계보건기구(WHO)는 2021년 9월 22일, 16년 만에 글로벌 대기질 가이드라인(Global Air Quality Guidelines)을 전면 개정하여 발표했습니다. 이 개정은 2005년 이후 축적된 방대한 역학 연구와 건강 영향 데이터를 반영한 것으로, 대기오염이 기존에 알려진 것보다 <strong>훨씬 낮은 농도에서도 건강에 악영향</strong>을 미친다는 과학적 근거에 기반합니다.</p>
+      <p>WHO는 대기오염으로 인한 조기 사망이 전 세계적으로 연간 약 700만 명에 달하며, 특히 저소득 및 중소득 국가에서 피해가 집중된다고 경고했습니다. 새로운 가이드라인은 모든 국가가 궁극적으로 달성해야 할 목표치를 제시하는 동시에, 현실적 이행을 위한 단계별 과도 목표(Interim Targets)도 함께 제공합니다.</p>
+
+      <h3>2005년 vs 2021년 기준 비교</h3>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>오염물질</th>
+              <th>기간</th>
+              <th>2005년 기준</th>
+              <th>2021년 기준</th>
+              <th>강화 폭</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>PM2.5</td>
+              <td>연평균</td>
+              <td>10 µg/m³</td>
+              <td><strong>5 µg/m³</strong></td>
+              <td>50% 강화</td>
+            </tr>
+            <tr>
+              <td>PM2.5</td>
+              <td>24시간</td>
+              <td>25 µg/m³</td>
+              <td><strong>15 µg/m³</strong></td>
+              <td>40% 강화</td>
+            </tr>
+            <tr>
+              <td>PM10</td>
+              <td>연평균</td>
+              <td>20 µg/m³</td>
+              <td><strong>15 µg/m³</strong></td>
+              <td>25% 강화</td>
+            </tr>
+            <tr>
+              <td>PM10</td>
+              <td>24시간</td>
+              <td>50 µg/m³</td>
+              <td><strong>45 µg/m³</strong></td>
+              <td>10% 강화</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>표에서 보듯, PM2.5의 강화 폭이 특히 큽니다. 연평균 기준이 10µg/m³에서 5µg/m³으로 절반이 된 것은 미세먼지가 매우 낮은 농도에서도 건강에 유의미한 영향을 미친다는 최신 연구 결과를 반영한 것입니다. 이는 사실상 전 세계 대부분의 도시가 WHO 최종 권고치를 충족하지 못하게 되는 수준입니다.</p>
+
+      <h3>과도 목표(Interim Targets) 1~4단계</h3>
+      <p>WHO는 모든 국가가 즉시 최종 권고치를 달성하기 어려운 현실을 인정하여, 4단계의 과도 목표를 설정했습니다. 각 단계는 건강 영향의 유의미한 감소와 연결되며, 국가별 상황에 맞는 점진적 개선 경로를 제시합니다.</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>단계</th>
+              <th>PM2.5 연평균</th>
+              <th>PM2.5 24시간</th>
+              <th>PM10 연평균</th>
+              <th>PM10 24시간</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>IT-1 (과도목표 1)</td>
+              <td>35 µg/m³</td>
+              <td>75 µg/m³</td>
+              <td>70 µg/m³</td>
+              <td>150 µg/m³</td>
+            </tr>
+            <tr>
+              <td>IT-2 (과도목표 2)</td>
+              <td>25 µg/m³</td>
+              <td>50 µg/m³</td>
+              <td>50 µg/m³</td>
+              <td>100 µg/m³</td>
+            </tr>
+            <tr>
+              <td>IT-3 (과도목표 3)</td>
+              <td>15 µg/m³</td>
+              <td>37.5 µg/m³</td>
+              <td>30 µg/m³</td>
+              <td>75 µg/m³</td>
+            </tr>
+            <tr>
+              <td>IT-4 (과도목표 4)</td>
+              <td>10 µg/m³</td>
+              <td>25 µg/m³</td>
+              <td>20 µg/m³</td>
+              <td>50 µg/m³</td>
+            </tr>
+            <tr>
+              <td style="color:#90caf9; font-weight:600;">최종 권고치 (AQG)</td>
+              <td style="color:#90caf9;">5 µg/m³</td>
+              <td style="color:#90caf9;">15 µg/m³</td>
+              <td style="color:#90caf9;">15 µg/m³</td>
+              <td style="color:#90caf9;">45 µg/m³</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>IT-1에서 IT-2로 이동할 때 PM2.5 장기 노출 관련 사망 위험이 약 6% 추가 감소하며, IT-2에서 IT-3으로 이동하면 다시 약 6% 감소합니다. 이는 각 단계별 개선이 실질적인 건강 이익으로 이어진다는 것을 의미합니다.</p>
+
+      <h3>한국 기준과의 차이점 분석</h3>
+      <p>한국의 현행 PM2.5 환경기준(연평균 15µg/m³)은 WHO 과도 목표 3단계(IT-3)에 해당합니다. 이는 2005년 WHO 최종 권고치(연평균 10µg/m³)보다도 느슨한 수준입니다. 2021년 최종 권고치(연평균 5µg/m³)와 비교하면 무려 3배의 격차가 있습니다.</p>
+      <p>PM10의 경우에도 한국 환경기준(연평균 50µg/m³)은 WHO 최종 권고치(연평균 15µg/m³)의 3.3배에 달합니다. 24시간 기준에서도 한국의 PM2.5 35µg/m³은 WHO 권고 15µg/m³의 2.3배 수준입니다.</p>
+      <div class="warning-box">
+        현실적으로 한국이 단기간에 WHO 2021년 최종 권고치를 달성하기는 매우 어렵습니다. 서울의 연평균 PM2.5 농도가 약 17~20µg/m³ 수준인 점을 감안하면, 5µg/m³ 달성을 위해서는 현재 농도의 70~75%를 감축해야 합니다. 이는 국내 배출 저감만으로는 불가능하며, 동북아 차원의 국제 협력이 필수적입니다.
+      </div>
+      <p>다만 WHO 가이드라인은 법적 구속력이 있는 기준이 아닌 <strong>권고 기준</strong>이라는 점을 유의해야 합니다. 각국이 자국의 대기질 현황, 기술 역량, 경제적 여건 등을 고려하여 자체 환경기준을 설정합니다. WHO 가이드라인은 궁극적으로 도달해야 할 목표 방향을 제시하는 역할을 합니다.</p>
+    </div>
+  </div>
+
+  <!-- 3. 미국 EPA (AQI) -->
+  <div class="card" id="usa">
+    <h2>3. 미국 EPA (AQI)</h2>
+    <div class="content-body">
+      <h3>AQI 6단계 시스템</h3>
+      <p>미국 환경보호청(EPA, Environmental Protection Agency)은 대기질 지수 AQI(Air Quality Index)를 사용합니다. AQI는 0~500 범위의 점수로 대기질을 표현하며, <strong>6단계</strong>로 분류하는 것이 특징입니다. 한국의 4단계 시스템보다 세분화되어 있어, 중간 수준의 오염에서 더 정밀한 정보를 제공합니다.</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>AQI 범위</th>
+              <th>등급</th>
+              <th>색상</th>
+              <th>건강 영향</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0 ~ 50</td>
+              <td>Good (좋음)</td>
+              <td style="color:#4caf50;">녹색</td>
+              <td>건강 우려 없음</td>
+            </tr>
+            <tr>
+              <td>51 ~ 100</td>
+              <td>Moderate (보통)</td>
+              <td style="color:#ffeb3b;">노랑</td>
+              <td>극소수 민감군 영향 가능</td>
+            </tr>
+            <tr>
+              <td>101 ~ 150</td>
+              <td>Unhealthy for Sensitive Groups (민감군 주의)</td>
+              <td style="color:#ff9800;">주황</td>
+              <td>민감군 건강 영향</td>
+            </tr>
+            <tr>
+              <td>151 ~ 200</td>
+              <td>Unhealthy (건강에 해로움)</td>
+              <td style="color:#f44336;">빨강</td>
+              <td>일반인도 건강 영향 시작</td>
+            </tr>
+            <tr>
+              <td>201 ~ 300</td>
+              <td>Very Unhealthy (매우 해로움)</td>
+              <td style="color:#9c27b0;">보라</td>
+              <td>모든 사람 건강 영향</td>
+            </tr>
+            <tr>
+              <td>301 ~ 500</td>
+              <td>Hazardous (위험)</td>
+              <td style="color:#7e0023;">적갈색</td>
+              <td>전체 인구 건강 비상</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>PM2.5/PM10 기준점(Breakpoints)</h3>
+      <p>미국 EPA는 2024년 2월 PM2.5에 대한 국가대기질기준(NAAQS)을 강화했습니다. 연평균 기준을 기존 12µg/m³에서 <strong>9µg/m³</strong>으로 25% 하향 조정했습니다. 이는 대기오염의 건강 영향에 대한 최신 과학적 근거를 반영한 것입니다. 24시간 기준은 35µg/m³으로 유지되었습니다.</p>
+      <p>PM2.5의 AQI 산출 기준점을 살펴보면, AQI 50(Good 상한)에 해당하는 PM2.5 농도는 <strong>9.0µg/m³</strong>이고, AQI 100(Moderate 상한)은 <strong>35.4µg/m³</strong>입니다. AQI 150(Unhealthy for Sensitive Groups 상한)은 55.4µg/m³, AQI 200은 125.4µg/m³, AQI 300은 225.4µg/m³입니다.</p>
+      <p>PM10의 경우 AQI 50에 해당하는 농도는 54µg/m³, AQI 100은 154µg/m³, AQI 150은 254µg/m³입니다.</p>
+
+      <h3>한국 CAI와 미국 AQI 비교</h3>
+      <p>한국 CAI와 미국 AQI는 비슷해 보이지만 중요한 차이가 있습니다. 첫째, <strong>등급 수</strong>가 다릅니다. 한국은 4단계, 미국은 6단계입니다. 미국의 '민감군 주의(101~150)'와 '매우 해로움(201~300)' 등급은 한국 시스템에 대응하는 구간이 없습니다. 이로 인해 미국 시스템이 중간 수준의 오염에서 더 섬세한 구분을 제공합니다.</p>
+      <p>둘째, <strong>같은 농도에 대한 등급 산정이 다릅니다</strong>. 예를 들어 PM2.5가 20µg/m³일 때, 한국 CAI에서는 '보통' 등급이지만, 미국 AQI에서는 이미 'Moderate' 구간의 중상위에 위치합니다. PM2.5 40µg/m³일 때 한국에서는 '나쁨'이지만, 미국에서는 'Unhealthy for Sensitive Groups' 수준입니다.</p>
+      <p>셋째, <strong>계산 방식</strong>이 다릅니다. 한국 CAI는 실시간(1시간) 농도를 기반으로 산출하는 반면, 미국 AQI 중 PM2.5는 최근 12시간의 이동평균(NowCast 알고리즘)을 사용합니다. NowCast는 급격한 농도 변화에 가중치를 두어 최신 상황을 더 잘 반영하면서도 단기 변동에 의한 과잉 반응을 줄이는 방식입니다.</p>
+
+      <h3>같은 PM2.5 수치인데 등급이 다른 이유</h3>
+      <p>해외 대기질 앱이나 웹사이트에서 확인한 대기질 등급이 에어코리아의 등급과 다른 경우가 많은데, 이는 다음과 같은 이유 때문입니다.</p>
+      <p>가장 큰 요인은 <strong>등급 구간(breakpoints)의 차이</strong>입니다. 한국에서 PM2.5 30µg/m³은 '보통'이지만, 미국 AQI에서는 약 79점으로 역시 'Moderate'이되 상당히 높은 편입니다. 그런데 WHO 2021년 기준으로 보면 24시간 권고치(15µg/m³)의 2배에 해당하여 건강에 좋지 않은 수준으로 해석될 수 있습니다.</p>
+      <p>또한 <strong>측정 시간 단위</strong>의 차이도 있습니다. 한국이 시간 농도를 사용하는 반면, 미국은 12시간 이동평균, 일부 글로벌 앱은 독자적인 평균화 방식을 사용합니다. 같은 시점에 같은 측정소 데이터를 사용하더라도, 평균화 방식에 따라 수치 자체가 달라질 수 있습니다.</p>
+      <div class="highlight-box">
+        해외 앱(IQAir, Breezometer 등)에서 한국 도시의 대기질이 에어코리아보다 나쁘게 표시되는 경우가 많은 이유는, 이들 앱이 주로 미국 AQI나 자체 기준을 적용하기 때문입니다. 에어코리아 등급만 보지 말고, <strong>원시 농도(µg/m³)</strong>를 확인하는 습관이 중요합니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 중국 대기질 기준 -->
+  <div class="card" id="china">
+    <h2>4. 중국 대기질 기준</h2>
+    <div class="content-body">
+      <h3>중국 AQI 시스템</h3>
+      <p>중국은 2012년부터 HJ 633-2012 기술규범에 따라 자체 AQI(Air Quality Index) 시스템을 운영하고 있습니다. 미국 AQI와 유사하게 0~500 범위의 6단계 등급을 사용하지만, 기준점(breakpoints)이 미국과 다릅니다.</p>
+      <p>중국 AQI의 6단계는 다음과 같습니다. 0~50 <span class="grade-good">우수(优)</span>, 51~100 <span class="grade-moderate">양호(良)</span>, 101~150 경도오염(轻度污染), 151~200 <span class="grade-bad">중도오염(中度污染)</span>, 201~300 중증오염(重度污染), 301~500 <span class="grade-worst">심각오염(严重污染)</span>입니다.</p>
+      <p>중국의 PM2.5 환경기준은 크게 두 등급으로 나뉩니다. <strong>1급 기준</strong>(자연보호구, 관광지 등)은 연평균 15µg/m³, 24시간 35µg/m³이며, <strong>2급 기준</strong>(도시 거주 지역)은 연평균 35µg/m³, 24시간 75µg/m³입니다. 1급 기준은 한국 환경기준과 동일한 수준이지만, 실제 도시 지역에 적용되는 2급 기준은 한국보다 훨씬 느슨합니다.</p>
+      <p>PM10의 경우 1급 기준은 연평균 40µg/m³, 24시간 50µg/m³, 2급 기준은 연평균 70µg/m³, 24시간 150µg/m³입니다.</p>
+
+      <h3>한국에 미치는 영향 (월경성 오염)</h3>
+      <p>중국의 대기질은 한국의 미세먼지 농도에 <strong>직접적인 영향</strong>을 미칩니다. 이른바 '월경성 대기오염(Transboundary Air Pollution)'은 한국 대기질 관리에서 가장 큰 변수 중 하나입니다.</p>
+      <p>한국과 중국이 공동으로 수행한 대기질 공동 연구(2017~2019년)에 따르면, 서울의 PM2.5 중 국외 영향은 평균적으로 약 32%이며, 고농도 발생 시에는 <strong>최대 70~80%</strong>까지 증가하는 것으로 분석되었습니다. 특히 겨울철과 봄철에 서풍·북서풍이 우세할 때 중국 동부 지역의 오염물질이 대거 유입됩니다.</p>
+      <p>월경성 오염의 영향은 지역에 따라 다릅니다. 서해안 지역(인천, 충남 서해안 등)은 중국 발 오염물질의 직접적인 영향을 받아 국외 기여율이 더 높으며, 내륙 지역(대구, 대전 등)은 국내 발생원의 기여가 상대적으로 큽니다. 제주도의 경우 국내 산업 활동이 적어 국외 유입 영향이 가장 뚜렷하게 나타나는 지역입니다.</p>
+
+      <h3>중국 대기질 개선 추이 (2013년 이후)</h3>
+      <p>긍정적인 소식은 중국의 대기질이 <strong>획기적으로 개선</strong>되고 있다는 것입니다. 2013년 '대기오염방지행동계획(大气十条)'을 시작으로, 중국 정부는 전례 없는 규모의 대기오염 감축 정책을 시행해 왔습니다.</p>
+      <p>베이징의 연평균 PM2.5 농도는 2013년 89.5µg/m³에서 2023년 약 32µg/m³으로 약 <strong>64% 감소</strong>했습니다. 전국 338개 주요 도시의 평균 PM2.5 농도도 같은 기간 약 57% 감소했습니다. 이는 석탄 사용 제한, 산업 구조조정, 차량 배출 규제 강화, 청정에너지 전환 등 포괄적인 정책의 결과입니다.</p>
+      <p>중국 대기질의 개선은 한국에도 긍정적 영향을 미치고 있습니다. 2019년 이후 한국의 PM2.5 농도가 뚜렷한 하강 추세를 보이는 것은 국내 감축 노력과 함께 중국발 월경성 오염의 감소도 기여한 것으로 분석됩니다. 다만 중국의 농도가 여전히 WHO 기준을 크게 상회하고 있어, 한국에 대한 영향은 계속될 전망입니다.</p>
+      <div class="highlight-box">
+        중국은 2030년까지 탄소 피크, 2060년까지 탄소 중립을 선언했습니다. 이러한 탈탄소 정책이 본격화되면 대기오염물질 배출도 동반 감소할 것으로 예상되어, 장기적으로 한국의 월경성 오염 문제 완화에 기여할 것으로 기대됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. 일본 대기질 기준 -->
+  <div class="card" id="japan">
+    <h2>5. 일본 대기질 기준</h2>
+    <div class="content-body">
+      <h3>일본 환경기준</h3>
+      <p>일본은 환경성(環境省)이 대기질 관리를 담당하며, 「환경기본법」에 따라 환경기준을 설정하고 있습니다. 일본의 대기질 기준은 한국과 유사하면서도 세부적으로 차이가 있습니다.</p>
+      <p>PM2.5 환경기준은 연평균 <strong>15µg/m³</strong>, 24시간 평균 <strong>35µg/m³</strong>입니다. 이는 한국의 현행 기준과 동일한 수준이며, 2009년에 설정되었습니다. 흥미로운 점은 일본이 한국보다 약 10년 앞서 이 기준을 도입했다는 것입니다.</p>
+      <p>PM10에 대해서는 별도의 환경기준 대신 <strong>부유분진(SPM, Suspended Particulate Matter)</strong> 기준을 적용합니다. SPM은 입자 지름 10µm 이하의 물질로 PM10과 유사하지만 측정 방법이 다릅니다. SPM 환경기준은 연평균 규정 없이 24시간 평균 100µg/m³, 1시간 평균 200µg/m³입니다.</p>
+
+      <h3>PM2.5 주의환기정보 (70µg/m³)</h3>
+      <p>일본은 2013년 중국의 극심한 대기오염이 사회적 관심을 모은 것을 계기로, PM2.5에 대한 <strong>주의환기정보(注意喚起情報)</strong> 제도를 도입했습니다. 이는 일평균 PM2.5 농도가 <strong>70µg/m³</strong>을 초과할 것으로 예상될 때 발령되는 것으로, 일반 환경기준(35µg/m³)과 별도로 운영됩니다.</p>
+      <p>주의환기정보는 법적 구속력은 없지만, 발령 시 외출 자제, 환기 제한, 격렬한 야외 운동 자제 등의 행동 요령이 안내됩니다. 이 기준치 70µg/m³은 한국의 '매우나쁨' 등급 기준(76µg/m³)과 유사한 수준입니다.</p>
+      <p>다만 일본의 주의환기정보 발령 빈도는 최근 매우 낮아졌습니다. 2014~2015년에는 서일본 지역을 중심으로 연간 수십 회 발령되었으나, 중국 대기질 개선과 함께 2020년 이후에는 거의 발령되지 않고 있습니다.</p>
+
+      <h3>한일 비교</h3>
+      <p>한국과 일본의 PM2.5 환경기준은 연평균·24시간 모두 동일(15µg/m³ / 35µg/m³)합니다. 그러나 실제 대기질 수준에는 상당한 차이가 있습니다. 도쿄의 연평균 PM2.5 농도는 약 10~12µg/m³로 서울(17~20µg/m³)보다 40~50% 낮습니다.</p>
+      <p>이 차이의 주요 원인은 지리적 위치입니다. 일본은 한국보다 중국에서 더 멀리 떨어져 있고, 태평양 쪽에서 불어오는 깨끗한 해풍의 영향을 더 많이 받습니다. 또한 일본은 1960~70년대부터 대기오염 규제를 강화해 온 오랜 역사가 있어, 국내 배출원 관리가 한국보다 성숙한 측면도 있습니다.</p>
+      <p>예보 체계에서도 차이가 있습니다. 한국은 4단계 예보등급을 매일 발표하는 반면, 일본은 주의환기정보라는 단일 임계값 기반 시스템을 운영합니다. 한국의 시스템이 일상적인 대기질 정보 전달에 더 적합한 구조라고 할 수 있습니다. 다만 일본은 최근 PM2.5뿐 아니라 광화학옥시단트(광화학스모그) 주의보 체계가 잘 발달되어 있어, 복합 오염에 대한 대응 측면에서는 장점이 있습니다.</p>
+    </div>
+  </div>
+
+  <!-- 광고 2 -->
+  <div class="card" style="text-align:center; padding:20px;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-2601124884291683"
+         data-ad-slot="auto"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- 6. EU 대기질 기준 -->
+  <div class="card" id="eu">
+    <h2>6. EU 대기질 기준</h2>
+    <div class="content-body">
+      <h3>EU 대기질 지침 (Directive 2008/50/EC)</h3>
+      <p>유럽연합(EU)은 2008년 제정된 대기질 지침(Ambient Air Quality Directive, 2008/50/EC)을 통해 회원국에 법적 구속력이 있는 대기질 기준을 설정하고 있습니다. 이 지침은 WHO의 가이드라인과 달리 <strong>법적 의무</strong>로, 회원국이 기준을 초과하면 유럽사법재판소(ECJ)에 의해 제재를 받을 수 있습니다.</p>
+      <p>현행 EU 대기질 기준에서 PM2.5의 연평균 한도는 <strong>25µg/m³</strong>(2015년부터 적용)이며, PM10은 연평균 40µg/m³, 24시간 평균 50µg/m³(연간 35회 초과 허용)입니다. PM2.5의 24시간 기준은 별도로 설정되어 있지 않습니다.</p>
+      <p>EU의 PM2.5 연평균 기준 25µg/m³은 한국(15µg/m³)보다 느슨합니다. 이는 EU 지침이 2008년에 설정된 이후 오랫동안 개정되지 않았기 때문입니다. 실제 유럽 주요 도시의 PM2.5 농도는 이 기준을 대부분 충족하고 있어 기준 자체가 현실에 비해 느슨해진 측면이 있습니다.</p>
+
+      <h3>2030 개정안 (WHO 가이드라인 접근)</h3>
+      <p>이러한 한계를 인식하고, EU는 대기질 기준의 대폭 강화를 추진하고 있습니다. 2022년 유럽위원회가 제안하고 2024년에 최종 합의된 <strong>새로운 대기질 지침(Revised AAQD)</strong>은 2030년부터 적용될 예정이며, WHO 2021년 가이드라인에 대폭 접근하는 내용을 담고 있습니다.</p>
+      <p>새 지침에 따르면 2030년부터 PM2.5의 연평균 한도가 현행 25µg/m³에서 <strong>10µg/m³</strong>으로 대폭 강화됩니다. PM10은 연평균 20µg/m³, 24시간 45µg/m³으로 조정됩니다. PM2.5 24시간 기준도 <strong>25µg/m³</strong>으로 새로 도입됩니다.</p>
+      <p>이는 WHO 2021년 최종 권고치(PM2.5 연평균 5µg/m³)에는 미치지 못하지만, WHO의 IT-4(과도 목표 4단계, 연평균 10µg/m³)와 동일한 수준으로, 현행 기준 대비 획기적인 강화입니다. EU는 2050년까지 WHO 최종 권고치 달성을 궁극적 목표로 설정했습니다.</p>
+      <p>이 개정안은 전 세계적으로 중요한 의미가 있습니다. EU처럼 다수 국가가 참여하는 대규모 경제권에서 강화된 대기질 기준을 법적 의무로 도입한다는 것은, 다른 국가들에도 기준 강화의 압력과 모범 사례를 제공하기 때문입니다. 한국 역시 EU의 움직임을 참고하여 환경기준 재검토를 논의할 가능성이 높습니다.</p>
+      <div class="highlight-box">
+        EU의 2030년 PM2.5 기준(연평균 10µg/m³)이 시행되면, EU는 한국(15µg/m³)보다 엄격한 기준을 갖게 됩니다. 이는 한국의 환경기준 추가 강화 논의에 중요한 참고점이 될 것입니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. 주요국 PM2.5 기준 비교 총정리표 -->
+  <div class="card" id="total-compare">
+    <h2>7. 주요국 PM2.5 기준 비교 총정리표</h2>
+    <div class="content-body">
+      <p>아래 표는 한국, WHO, 미국, 중국, 일본, EU의 PM2.5 및 PM10 기준을 한눈에 비교합니다. 각국의 기준 수준 차이를 이해하는 데 도움이 됩니다.</p>
+
+      <h3>PM2.5 기준 비교</h3>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>국가/기관</th>
+              <th>연평균 (µg/m³)</th>
+              <th>24시간 평균 (µg/m³)</th>
+              <th>기준 설정/개정 연도</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#90caf9; font-weight:600;">WHO 2021</td>
+              <td><strong>5</strong></td>
+              <td><strong>15</strong></td>
+              <td>2021</td>
+              <td>최종 권고치 (가장 엄격)</td>
+            </tr>
+            <tr>
+              <td>미국 (EPA)</td>
+              <td><strong>9</strong></td>
+              <td>35</td>
+              <td>2024</td>
+              <td>연평균 강화 (기존 12→9)</td>
+            </tr>
+            <tr>
+              <td>EU (2030 신기준)</td>
+              <td><strong>10</strong></td>
+              <td>25</td>
+              <td>2024 합의, 2030 시행</td>
+              <td>WHO IT-4 수준</td>
+            </tr>
+            <tr>
+              <td style="color:#4caf50; font-weight:600;">한국</td>
+              <td>15</td>
+              <td>35</td>
+              <td>2018</td>
+              <td>WHO IT-3 수준</td>
+            </tr>
+            <tr>
+              <td>일본</td>
+              <td>15</td>
+              <td>35</td>
+              <td>2009</td>
+              <td>한국과 동일</td>
+            </tr>
+            <tr>
+              <td>EU (현행)</td>
+              <td>25</td>
+              <td>-</td>
+              <td>2008 (2015 적용)</td>
+              <td>24시간 기준 없음</td>
+            </tr>
+            <tr>
+              <td>중국 (2급)</td>
+              <td>35</td>
+              <td>75</td>
+              <td>2012</td>
+              <td>도시 거주 지역 기준</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>PM10 기준 비교</h3>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>국가/기관</th>
+              <th>연평균 (µg/m³)</th>
+              <th>24시간 평균 (µg/m³)</th>
+              <th>비고</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#90caf9; font-weight:600;">WHO 2021</td>
+              <td><strong>15</strong></td>
+              <td><strong>45</strong></td>
+              <td>최종 권고치 (가장 엄격)</td>
+            </tr>
+            <tr>
+              <td>EU (2030 신기준)</td>
+              <td><strong>20</strong></td>
+              <td>45</td>
+              <td>WHO 수준 근접</td>
+            </tr>
+            <tr>
+              <td>EU (현행)</td>
+              <td>40</td>
+              <td>50</td>
+              <td>연 35회 초과 허용</td>
+            </tr>
+            <tr>
+              <td style="color:#4caf50; font-weight:600;">한국</td>
+              <td>50</td>
+              <td>100</td>
+              <td>WHO 대비 3.3배 느슨</td>
+            </tr>
+            <tr>
+              <td>일본 (SPM)</td>
+              <td>-</td>
+              <td>100</td>
+              <td>연평균 기준 없음, SPM 기준</td>
+            </tr>
+            <tr>
+              <td>미국 (EPA)</td>
+              <td>-</td>
+              <td>150</td>
+              <td>연평균 기준 폐지 (2006)</td>
+            </tr>
+            <tr>
+              <td>중국 (2급)</td>
+              <td>70</td>
+              <td>150</td>
+              <td>도시 거주 지역 기준</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>종합 분석</h3>
+      <p>총정리표를 통해 다음과 같은 특징을 확인할 수 있습니다.</p>
+      <p>첫째, <strong>WHO 2021년 기준이 압도적으로 가장 엄격</strong>합니다. PM2.5 연평균 5µg/m³은 현재 전 세계 어떤 국가의 법적 기준보다 엄격하며, 이를 충족하는 국가는 소수의 청정 지역(뉴질랜드, 아이슬란드 등)에 불과합니다.</p>
+      <p>둘째, <strong>미국과 EU가 기준을 빠르게 강화</strong>하고 있습니다. 미국은 2024년 PM2.5 연평균을 9µg/m³으로, EU는 2030년부터 10µg/m³으로 강화합니다. 이는 한국 기준(15µg/m³)보다 33~40% 엄격한 수준입니다.</p>
+      <p>셋째, <strong>한국과 일본은 동일한 기준</strong>을 유지하고 있으나, 양국의 실제 대기질 수준은 상이합니다. 일본은 대부분의 도시에서 기준을 충족하는 반면, 한국은 수도권을 중심으로 기준 초과가 빈번합니다.</p>
+      <p>넷째, <strong>중국의 기준은 가장 느슨</strong>하지만, 실제 개선 속도는 가장 빠릅니다. 중국의 대기질 개선은 한국에도 긍정적 영향을 미치므로 주목할 필요가 있습니다.</p>
+    </div>
+  </div>
+
+  <!-- 8. 한국의 대기질 현황과 국제 비교 -->
+  <div class="card" id="korea-status">
+    <h2>8. 한국의 대기질 현황과 국제 비교</h2>
+    <div class="content-body">
+      <h3>한국의 연평균 PM2.5 농도 추이 (2015~2024)</h3>
+      <p>한국의 전국 연평균 PM2.5 농도는 뚜렷한 하강 추세를 보이고 있습니다. 측정이 본격화된 이래의 추이를 살펴보면 다음과 같습니다.</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>연도</th>
+              <th>전국 평균 (µg/m³)</th>
+              <th>서울 평균 (µg/m³)</th>
+              <th>주요 특이사항</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2015</td><td>26</td><td>23</td><td>PM2.5 환경기준 최초 시행</td></tr>
+            <tr><td>2016</td><td>26</td><td>26</td><td>겨울철 고농도 빈번</td></tr>
+            <tr><td>2017</td><td>25</td><td>25</td><td>미세먼지 사회적 이슈 최고조</td></tr>
+            <tr><td>2018</td><td>23</td><td>23</td><td>환경기준 강화 (15/35)</td></tr>
+            <tr><td>2019</td><td>23</td><td>25</td><td>3월 초 역대급 고농도</td></tr>
+            <tr><td>2020</td><td>19</td><td>21</td><td>COVID-19 경제활동 감소 영향</td></tr>
+            <tr><td>2021</td><td>18</td><td>18</td><td>꾸준한 하강 추세</td></tr>
+            <tr><td>2022</td><td>18</td><td>18</td><td>감축 정책 효과 가시화</td></tr>
+            <tr><td>2023</td><td>17</td><td>18</td><td>환경기준 달성에 근접</td></tr>
+            <tr><td>2024</td><td>16~17 (추정)</td><td>17~18 (추정)</td><td>지속 개선 추세</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>2015년 대비 약 35~38% 감소했으며, 특히 2019년 이후 뚜렷한 하강세가 이어지고 있습니다. 2020년의 급격한 감소는 COVID-19 팬데믹으로 인한 경제활동 위축의 영향이 컸지만, 2021~2024년에도 하강 추세가 유지되고 있어 구조적인 개선이 이루어지고 있음을 알 수 있습니다.</p>
+      <p>개선의 주요 원인으로는 석탄화력발전 가동 제한 및 폐쇄, 경유차 운행 제한 확대, 산업시설 배출 규제 강화, 중국 대기질 동반 개선 등이 꼽힙니다.</p>
+
+      <h3>OECD 국가 중 순위</h3>
+      <p>한국의 PM2.5 연평균 농도는 OECD 38개 회원국 중 <strong>최하위권</strong>에 머물러 있습니다. 2022~2023년 기준으로 한국의 전국 평균 PM2.5 농도(약 17~18µg/m³)는 OECD 평균(약 12~13µg/m³)을 웃돌며, 멕시코, 튀르키예, 칠레, 폴란드 등과 함께 하위 5~6위권에 위치합니다.</p>
+      <p>OECD 국가 중 대기질이 가장 좋은 나라는 뉴질랜드, 핀란드, 에스토니아, 스웨덴 등 북유럽 및 오세아니아 국가들로, 연평균 PM2.5가 5~7µg/m³ 수준입니다. 이는 WHO 2021년 권고치에 근접하거나 달성하는 수준입니다.</p>
+      <p>한국이 OECD 평균 수준에 도달하려면 현재 농도를 약 25~30% 추가 감축해야 합니다. OECD 상위권(10µg/m³ 이하)에 진입하려면 약 40~45%의 추가 감축이 필요합니다.</p>
+      <div class="warning-box">
+        한국은 GDP 규모 세계 13위, 1인당 GDP 3만 달러 이상의 선진국이지만, 대기질 측면에서는 경제 수준에 걸맞지 않은 저조한 성적을 보이고 있습니다. 이는 높은 인구 밀도, 석유화학·철강 등 에너지 다소비 산업 구조, 월경성 오염의 영향 등 복합적 요인에 기인합니다.
+      </div>
+
+      <h3>개선 추세와 남은 과제</h3>
+      <p>한국의 대기질은 분명히 개선되고 있지만, 넘어야 할 산이 많습니다. 가장 큰 과제는 <strong>환경기준의 안정적 달성</strong>입니다. 전국 평균은 15µg/m³(환경기준)에 근접하고 있지만, 수도권과 충남·전북 일부 지역은 여전히 기준을 초과하고 있습니다. 특히 고농도 에피소드(PM2.5 일평균 76µg/m³ 이상)의 빈도를 줄이는 것이 체감 대기질 개선에 중요합니다.</p>
+      <p>또 다른 과제는 <strong>2차 미세먼지 저감</strong>입니다. 직접 배출되는 1차 미세먼지 저감은 상대적으로 진전이 있으나, 대기 중 화학반응으로 생성되는 2차 미세먼지(전체의 50~70%)를 줄이기 위해서는 VOC(휘발성유기화합물), NH₃(암모니아), NOx, SOx 등 전구물질의 복합적 관리가 필요합니다.</p>
+      <p>국제 협력 측면에서는 한중일 3국 환경장관회의(TEMM), 동북아 장거리이동 대기오염물질 공동연구(LTP) 등의 협의체가 있으나, 실질적인 감축 효과로 이어지기까지는 시간이 걸릴 전망입니다.</p>
+
+      <h3>2030 대기질 목표</h3>
+      <p>정부는 '제3차 미세먼지 관리 종합계획(2023~2027)'을 통해 2027년까지 전국 PM2.5 연평균을 <strong>13µg/m³ 이하</strong>로 낮추는 목표를 설정했습니다. 더 나아가 2030년까지 PM2.5 연평균을 <strong>10µg/m³ 이하</strong>로 달성하겠다는 장기 목표도 제시되어 있습니다. 이는 WHO 과도 목표 4단계(IT-4)와 EU 2030년 신기준에 부합하는 수준입니다.</p>
+      <p>이 목표 달성을 위해 2030년까지 석탄화력발전 추가 감축, 무공해차(전기·수소차) 보급 450만 대, 산업시설 최적가용기술(BAT) 적용 확대, 생활 부문 배출 저감 등이 추진될 예정입니다. 동시에 미국·EU의 기준 강화 추세를 반영하여 환경기준 자체의 재검토도 예상됩니다.</p>
+    </div>
+  </div>
+
+  <!-- 9. 알아두면 유용한 대기질 지수 해석법 -->
+  <div class="card" id="tips">
+    <h2>9. 알아두면 유용한 대기질 지수 해석법</h2>
+    <div class="content-body">
+      <h3>AQI/CAI 환산표</h3>
+      <p>해외 여행이나 글로벌 대기질 앱을 사용할 때 한국 CAI와 미국 AQI 등급 간 대략적인 환산을 알아두면 유용합니다. 아래 표는 PM2.5 농도를 기준으로 한국 CAI 등급과 미국 AQI 등급을 대응시킨 것입니다.</p>
+      <div class="table-scroll">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>PM2.5 (µg/m³)</th>
+              <th>한국 CAI 등급</th>
+              <th>미국 AQI 등급</th>
+              <th>WHO 2021 기준 대비</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>0 ~ 9</td>
+              <td class="grade-good">좋음</td>
+              <td style="color:#4caf50;">Good</td>
+              <td>24시간 권고치(15) 이내</td>
+            </tr>
+            <tr>
+              <td>10 ~ 15</td>
+              <td class="grade-good">좋음</td>
+              <td style="color:#ffeb3b;">Moderate</td>
+              <td>24시간 권고치 부근</td>
+            </tr>
+            <tr>
+              <td>16 ~ 35</td>
+              <td class="grade-moderate">보통</td>
+              <td style="color:#ffeb3b;">Moderate</td>
+              <td>권고치 1~2배 초과</td>
+            </tr>
+            <tr>
+              <td>36 ~ 55</td>
+              <td class="grade-bad">나쁨</td>
+              <td style="color:#ff9800;">USG*</td>
+              <td>권고치 2~3.5배 초과</td>
+            </tr>
+            <tr>
+              <td>56 ~ 75</td>
+              <td class="grade-bad">나쁨</td>
+              <td style="color:#f44336;">Unhealthy</td>
+              <td>권고치 3.5~5배 초과</td>
+            </tr>
+            <tr>
+              <td>76 ~ 150</td>
+              <td class="grade-worst">매우나쁨</td>
+              <td style="color:#f44336;">Unhealthy~Very Unhealthy</td>
+              <td>권고치 5~10배 초과</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.8rem; color:rgba(255,255,255,0.5);">* USG = Unhealthy for Sensitive Groups (민감군 주의)</p>
+      <p>이 표에서 주목할 점은, 한국에서 '보통'으로 분류되는 PM2.5 16~35µg/m³ 구간이 WHO 2021년 기준으로는 이미 24시간 권고치(15µg/m³)를 초과하는 수준이라는 것입니다. 즉, 한국의 '보통'이 WHO 관점에서는 '보통이 아닌' 상태일 수 있습니다. 이러한 차이를 인식하고, 특히 <a href="/health.html" style="color:#90caf9;">호흡기 질환자, 어린이, 노인 등 민감군</a>은 '보통' 등급에서도 장시간 야외 활동을 자제하는 것이 바람직합니다.</p>
+
+      <h3>해외 여행 시 현지 대기질 확인 방법</h3>
+      <p>해외 여행 시 현지의 대기질을 확인하는 방법을 알아두면 건강 관리에 도움이 됩니다. 특히 대기오염이 심한 지역을 방문할 때는 사전 확인이 필수적입니다.</p>
+      <p><strong>여행 전 확인</strong>: 목적지의 연평균 대기질 수준을 미리 파악합니다. IQAir의 세계 대기질 보고서나 WHO 대기질 데이터베이스에서 도시별 연평균 PM2.5 농도를 확인할 수 있습니다. 동남아시아(방콕, 하노이 등), 남아시아(뉴델리, 다카 등), 중동 일부 도시는 한국보다 대기질이 상당히 나쁠 수 있으므로 마스크(KF94/N95) 준비를 권장합니다.</p>
+      <p><strong>현지에서 실시간 확인</strong>: 스마트폰 앱이 가장 편리합니다. IQAir(전 세계 대부분의 도시 커버), AirVisual, Breezometer 등의 앱을 사전에 설치해 두세요. 다만 이들 앱은 주로 미국 AQI를 기준으로 등급을 표시하므로, 한국 등급과 다르게 보일 수 있습니다. 앱에서 등급보다는 <strong>원시 PM2.5 농도(µg/m³)</strong>를 확인하고, 위의 환산표를 참고하여 판단하는 것이 정확합니다.</p>
+      <p><strong>지역별 주의사항</strong>: 인도 뉴델리는 겨울철(11~2월) PM2.5가 200~500µg/m³에 달하는 극심한 오염이 발생하므로 이 시기 여행 시 각별한 주의가 필요합니다. 태국 치앙마이는 3~4월 산불(화전) 시즌에 대기질이 급격히 악화됩니다. 중국 베이징은 크게 개선되었으나 겨울철에는 여전히 100µg/m³ 이상의 고농도가 발생할 수 있습니다.</p>
+
+      <h3>주요 글로벌 대기질 모니터링 사이트</h3>
+      <p>대기질 정보를 확인할 수 있는 주요 웹사이트와 앱을 소개합니다.</p>
+      <ul>
+        <li><strong>에어코리아 (airkorea.or.kr)</strong>: 한국환경공단 운영. 국내 대기질 확인의 공식 채널. 실시간 측정 데이터, 예보, 통계를 제공합니다.</li>
+        <li><strong>IQAir (iqair.com)</strong>: 스위스 기반 글로벌 대기질 정보 플랫폼. 전 세계 131개국 이상의 도시 대기질을 실시간으로 제공합니다. 세계 대기질 순위도 확인 가능합니다.</li>
+        <li><strong>AQICN (aqicn.org)</strong>: World Air Quality Index 프로젝트. 전 세계 측정소 데이터를 지도 형태로 제공합니다. 한국어를 포함한 다국어를 지원합니다.</li>
+        <li><strong>AirNow (airnow.gov)</strong>: 미국 EPA 운영. 미국 내 대기질 정보의 공식 채널입니다. 미국 여행 시 활용합니다.</li>
+        <li><strong>Copernicus CAMS (atmosphere.copernicus.eu)</strong>: EU의 지구관측 프로그램. 유럽 및 글로벌 대기질 예측 정보를 제공합니다. 과학적 데이터가 필요할 때 유용합니다.</li>
+        <li><strong>OpenAQ (openaq.org)</strong>: 오픈소스 대기질 데이터 플랫폼. 전 세계의 정부 측정 데이터를 통합하여 제공합니다. 데이터 분석에 적합합니다.</li>
+      </ul>
+      <div class="highlight-box">
+        대기질 앱이나 사이트마다 같은 지역이라도 수치가 다를 수 있습니다. 이는 데이터 소스(측정소), 평균화 방식, AQI 산출 기준이 다르기 때문입니다. 가장 정확한 국내 정보는 에어코리아, 해외 정보는 현지 정부 공식 사이트를 우선 참고하되, IQAir·AQICN 등을 보조적으로 활용하는 것을 권장합니다.
+      </div>
+
+      <h3>대기질 정보 활용 팁</h3>
+      <p>마지막으로, 대기질 정보를 일상에서 효과적으로 활용하는 방법을 정리합니다.</p>
+      <p><strong>매일 아침 확인 습관</strong>: 출근·등교 전 에어코리아 앱이나 위젯으로 당일 대기질 예보를 확인합니다. '나쁨' 이상이면 야외 활동을 줄이고 <a href="/purifier.html" style="color:#90caf9;">공기청정기</a>를 가동합니다.</p>
+      <p><strong>농도 숫자에 주목</strong>: 등급만 보지 말고 실제 PM2.5 농도(µg/m³)를 확인합니다. 같은 '보통' 등급이라도 16µg/m³과 34µg/m³은 건강 영향이 다릅니다.</p>
+      <p><strong>실내외 농도 비교</strong>: 일반 건물 실내의 PM2.5 농도는 환기 상태에 따라 실외의 30~90% 수준입니다. 고농도 시 환기를 줄이고 공기청정기를 사용하면 실내 농도를 크게 낮출 수 있습니다. 자세한 내용은 <a href="/seasonal.html" style="color:#90caf9;">계절별 대처법</a> 페이지를 참고하세요.</p>
+      <p><strong>장기 추세 관심</strong>: 하루하루의 농도 변동에 일희일비하기보다, 월간·연간 평균 추이에 관심을 가지세요. 한국의 대기질은 분명히 개선되고 있으며, 이러한 추세를 아는 것이 합리적 판단에 도움이 됩니다.</p>
+      <p>대기질 기준은 결국 과학적 근거와 사회적 합의의 산물입니다. WHO의 강화된 권고, 미국·EU의 기준 강화 추세는 전 세계적으로 더 깨끗한 공기에 대한 요구가 높아지고 있음을 보여줍니다. 한국도 이러한 글로벌 흐름에 맞춰 환경기준을 점진적으로 강화하고, 실질적인 대기질 개선을 이루어 나가야 할 것입니다. 무엇보다 시민 한 사람 한 사람이 대기질 정보에 관심을 가지고, 건강 보호 행동을 실천하며, 깨끗한 공기를 위한 정책을 지지하는 것이 중요합니다.</p>
+    </div>
+  </div>
+
+  <!-- 관련 페이지 안내 -->
+  <div class="card">
+    <h2>관련 페이지</h2>
+    <div class="content-body">
+      <ul>
+        <li><a href="/guide.html" style="color:#90caf9;">미세먼지 완벽 가이드</a> — 미세먼지의 정의, 건강 영향, 등급별 행동 요령</li>
+        <li><a href="/health.html" style="color:#90caf9;">취약계층 건강 가이드</a> — 어린이, 노인, 임산부, 호흡기 질환자를 위한 건강 관리법</li>
+        <li><a href="/seasonal.html" style="color:#90caf9;">계절별 대처법</a> — 봄철 황사, 겨울철 고농도 미세먼지 등 계절별 대응 전략</li>
+        <li><a href="/purifier.html" style="color:#90caf9;">공기청정기 가이드</a> — 공기청정기 선택법, CADR, 필터 관리 방법</li>
+        <li><a href="/faq.html" style="color:#90caf9;">자주 묻는 질문</a> — 미세먼지에 대한 궁금증 해결</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>미세먼지 정보 포털</h4>
+      <p>에어코리아 공공데이터 기반 실시간 대기질 모니터링 서비스</p>
+    </div>
+    <div class="footer-col">
+      <h4>서비스</h4>
+      <ul>
+        <li><a href="/">실시간 현황</a></li>
+        <li><a href="/guide.html">미세먼지 가이드</a></li>
+        <li><a href="/faq.html">자주 묻는 질문</a></li>
+        <li><a href="/about.html">사이트 소개</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>건강 가이드</h4>
+      <ul>
+        <li><a href="/health.html">취약계층 건강 가이드</a></li>
+        <li><a href="/seasonal.html">계절별 대처법</a></li>
+        <li><a href="/purifier.html">공기청정기 가이드</a></li>
+        <li><a href="/comparison.html">국내외 기준 비교</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>법적 고지</h4>
+      <ul>
+        <li><a href="/privacy.html">개인정보처리방침</a></li>
+        <li><a href="/terms.html">이용약관</a></li>
+        <li><a href="https://www.airkorea.or.kr" target="_blank" rel="noopener">에어코리아</a></li>
+        <li><a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025-2026 미세먼지 정보 포털. 데이터 출처: 한국환경공단 에어코리아 (환경부)</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('nav-toggle').addEventListener('click', function() {
+    document.getElementById('nav-links').classList.toggle('active');
+  });
+</script>
+
+<script src="/common.js"></script>
+</body>
+</html>

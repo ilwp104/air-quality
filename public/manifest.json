@@ -1,0 +1,24 @@
+{
+  "name": "미세먼지 정보 포털",
+  "short_name": "미세먼지",
+  "description": "한국 전역 미세먼지 실시간 현황 - 에어코리아 공공데이터 기반",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1a1a2e",
+  "background_color": "#1a1a2e",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

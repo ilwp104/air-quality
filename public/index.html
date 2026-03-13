@@ -18,6 +18,22 @@
   <meta name="google-adsense-account" content="ca-pub-2601124884291683">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2601124884291683" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="/common.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="/icons/icon.svg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "미세먼지 정보 포털",
+    "description": "한국 전역 미세먼지(PM2.5/PM10) 실시간 현황을 확인하세요. 에어코리아 공공데이터 기반 행정구역별 대기질 지도, 주요 도시 대기질, 날씨 정보를 제공합니다.",
+    "url": "https://dustinfo.kr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "inLanguage": "ko",
+    "author": {"@type": "Organization", "name": "미세먼지 정보 포털"},
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}
+  }
+  </script>
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
   <style>
@@ -197,6 +213,7 @@
     <div class="nav-links" id="nav-links">
       <a href="/" class="active">실시간 현황</a>
       <a href="/guide.html">미세먼지 가이드</a>
+      <a href="/faq.html">자주 묻는 질문</a>
       <a href="/about.html">사이트 소개</a>
     </div>
     <button class="nav-toggle" id="nav-toggle" aria-label="메뉴">&#9776;</button>
@@ -275,6 +292,19 @@
     </div>
   </div>
 
+  <!-- 미세먼지 가이드 모음 -->
+  <div class="card">
+    <h2>미세먼지 가이드 모음</h2>
+    <div class="links">
+      <a href="/guide.html">미세먼지 완벽 가이드<small>정의, 건강 영향, 등급별 행동 요령, 마스크 선택법</small></a>
+      <a href="/health.html">취약계층 건강 가이드<small>어린이, 노인, 임산부, 호흡기·심혈관 질환자별 대처법</small></a>
+      <a href="/seasonal.html">계절별 미세먼지 대처법<small>봄 황사, 여름 오존, 가을 준비, 겨울 난방 시기별 가이드</small></a>
+      <a href="/purifier.html">공기청정기 선택 가이드<small>HEPA 필터, CADR, 배치법, 실내 공기질 관리 총정리</small></a>
+      <a href="/comparison.html">국내외 대기질 기준 비교<small>한국·WHO·미국·일본·EU 기준 비교 분석</small></a>
+      <a href="/faq.html">자주 묻는 질문 (FAQ)<small>미세먼지에 대해 가장 많이 묻는 질문 20선</small></a>
+    </div>
+  </div>
+
   <!-- 참고 사이트 -->
   <div class="card">
     <h2>참고 사이트</h2>
@@ -301,11 +331,21 @@
       <p>에어코리아 공공데이터 기반 실시간 대기질 모니터링 서비스</p>
     </div>
     <div class="footer-col">
-      <h4>페이지</h4>
+      <h4>서비스</h4>
       <ul>
         <li><a href="/">실시간 현황</a></li>
         <li><a href="/guide.html">미세먼지 가이드</a></li>
+        <li><a href="/faq.html">자주 묻는 질문</a></li>
         <li><a href="/about.html">사이트 소개</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>건강 가이드</h4>
+      <ul>
+        <li><a href="/health.html">취약계층 건강 가이드</a></li>
+        <li><a href="/seasonal.html">계절별 대처법</a></li>
+        <li><a href="/purifier.html">공기청정기 가이드</a></li>
+        <li><a href="/comparison.html">국내외 기준 비교</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -313,18 +353,13 @@
       <ul>
         <li><a href="/privacy.html">개인정보처리방침</a></li>
         <li><a href="/terms.html">이용약관</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>데이터 출처</h4>
-      <ul>
-        <li><a href="https://www.airkorea.or.kr" target="_blank" rel="noopener">에어코리아 (환경부)</a></li>
+        <li><a href="https://www.airkorea.or.kr" target="_blank" rel="noopener">에어코리아</a></li>
         <li><a href="https://www.data.go.kr" target="_blank" rel="noopener">공공데이터포털</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>&copy; 2025 미세먼지 정보 포털. 데이터 출처: 한국환경공단 에어코리아 (환경부) | 1시간마다 자동 갱신</p>
+    <p>&copy; 2025-2026 미세먼지 정보 포털. 데이터 출처: 한국환경공단 에어코리아 (환경부) | 1시간마다 자동 갱신</p>
   </div>
 </footer>
 
@@ -979,5 +1014,6 @@ document.getElementById('nav-toggle').addEventListener('click', () => {
   document.getElementById('nav-links').classList.toggle('open');
 });
 </script>
+<script src="/common.js"></script>
 </body>
 </html>
