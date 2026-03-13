@@ -213,7 +213,9 @@ html.light-mode .cjs-breadcrumb .current{color:rgba(0,0,0,0.7) !important;}\
 html.light-mode .cjs-breadcrumb .sep{color:rgba(0,0,0,0.25) !important;}\
 html.light-mode .cjs-toc{background:rgba(255,255,255,0.8) !important;border-color:rgba(0,0,0,0.1) !important;}\
 html.light-mode .cjs-toc .toc-title{color:#1a1a2e !important;}\
+html.light-mode .cjs-toc li{color:rgba(0,0,0,0.5) !important;}\
 html.light-mode .cjs-toc a{color:rgba(0,0,0,0.6) !important;}\
+html.light-mode .cjs-toc a:hover{color:#1565c0 !important;}\
 html.light-mode .cjs-share a,html.light-mode .cjs-share button{\
   border-color:rgba(0,0,0,0.12) !important;background:rgba(0,0,0,0.04) !important;\
   color:rgba(0,0,0,0.6) !important;\
