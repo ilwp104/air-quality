@@ -182,7 +182,7 @@
   cursor:pointer;transition:all .2s;margin-left:8px;line-height:1;\
 }\
 .cjs-theme-toggle:hover{background:rgba(255,255,255,0.1);color:#fff;}\
-html.light-mode{\
+html.light-mode body{\
   background:linear-gradient(135deg,#e8eaf6 0%,#f5f5f5 50%,#e3f2fd 100%) !important;\
   color:#333 !important;\
 }\
